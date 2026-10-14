@@ -29,13 +29,36 @@ import {
   changeTitle, changeValues, exName, canRevert, revertLast
 } from '../lib/coach.js'
 import { insightsFor, sessionInsights } from '../lib/coach-insights.js'
-import { useCoachStatus, requestReview, requestDebrief, requestPlan, refinePlan, resolvePending, cohortStats, setCohortShare, jobErrorText, awaitedJob, settleAwaited, JOB_ERRORS } from '../lib/coach-api.js'
+import { wantsReview } from '../lib/coach-intent.js'
+import { useCoachStatus, requestReview, requestChat, canChat, requestDebrief, requestPlan, refinePlan, resolvePending, cohortStats, setCohortShare, jobErrorText, awaitedJob, settleAwaited, JOB_ERRORS } from '../lib/coach-api.js'
 import { confirmSheet } from '../sheets.jsx'
 import Icon from '../components/Icon.jsx'
 import { glyphOf } from '../lib/glyphs.js'
 import LineChart from '../components/LineChart.jsx'
 import { Button, Check, Switch, Section, Row, SelectRow } from '../components/ui.jsx'
 import '../coach.css'
+
+function CoachMenu({ close, idle, askReview, lastWorkout, askDebrief, pickRoutine, community, showCohort, showHistory, askNewPlan, cadenceSheet, coach, openSheet, update, doRevert }) {
+  const liveS = useStore(s => s.S)
+  return (
+    <div className="chat-menu">
+      <h3>{t('Coach')}</h3>
+      <div className="sect-b">
+        {idle && <Row icon="sparkles" iconTint="var(--acc)" title={t('Ask for a review')} subtitle={t('What would the Coach change after your last sessions?')} accessory="chevron" onClick={() => { close(); askReview() }} />}
+        {idle && !!lastWorkout && <Row icon="checkCircle" iconTint="var(--green)" title={t('Review my last workout')} subtitle={t('What went well, what to watch, what to do next time')} accessory="chevron" onClick={() => { close(); askDebrief() }} />}
+        {idle && !!(liveS.routines || []).length && <Row icon="wrench" iconTint="var(--orange)" title={t('Improve a routine')} subtitle={t('Pick one; the Coach works on just that')} accessory="chevron" onClick={() => { close(); pickRoutine() }} />}
+        {community && <Row icon="person" iconTint="var(--teal)" title={t('Compare with others here')} subtitle={t('Anonymous medians from this instance')} accessory="chevron" onClick={() => { close(); showCohort() }} />}
+        <Row icon="history" iconTint="var(--blue)" title={t('Everything the Coach proposed')} subtitle={t('Plans, suggestions and debriefs, kept')} accessory="chevron" onClick={() => { close(); showHistory() }} />
+        {idle && <Row icon="clipboard" iconTint="var(--indigo)" title={t('Start a new plan')} subtitle={t('A fresh plan from your answers; your workouts stay')} accessory="chevron" onClick={() => { close(); askNewPlan() }} />}
+        <Row icon="pencil" iconTint="var(--indigo)" title={t('Edit my answers')} subtitle={t('Goal, days, equipment, limits')} accessory="chevron" onClick={() => closeThenNav(close, '/coach/intake?edit=1')} />
+        <Row icon="clock" iconTint="var(--purple)" title={t('Automatic reviews')} subtitle={cadenceLabel(coach)} accessory="chevron" onClick={() => { close(); cadenceSheet(openSheet, update) }} />
+        <Row icon="chat" iconTint="var(--indigo)" title={t('Chat-supported mode')} subtitle={liveS.coachMode ? t('Active — type questions and get answers in the chat') : t('Original — Coach reviews and adjusts your plan')} onClick={() => update(s => { s.coachMode = !s.coachMode })}><span onClick={e => e.stopPropagation()}><Switch checked={!!liveS.coachMode} onChange={() => update(s => { s.coachMode = !s.coachMode })} /></span></Row>
+        {canRevert(liveS) && <Row icon="reset" iconTint="var(--blue)" title={t('Undo the last Coach changes')} accessory="chevron" onClick={() => { close(); doRevert() }} />}
+      </div>
+      <div style={{ height: 10 }} />
+    </div>
+  )
+}
 
 export default function CoachChat() {
   const nav = useNavigate()
@@ -50,6 +73,7 @@ export default function CoachChat() {
   const { job, pending, cap, loading, lastError, last, refresh, maxMessageLen } = useCoachStatus(true)
   const [text, setText] = useState('')
   const [busy, setBusy] = useState(false)
+  const [chatting, setChatting] = useState(false)   // a typed question is waiting for its answer
   const endRef = useRef(null)
   const prevJob = useRef(null)
   const coachMode = coachLocal?.mode
@@ -94,7 +118,7 @@ export default function CoachChat() {
     })
   }, [job, pending, loading, last?.id])
 
-  useEffect(() => { if (typeof endRef.current?.scrollIntoView === 'function') endRef.current.scrollIntoView({ block: 'end' }) }, [S.coach?.chat?.length, !!job, !!pending])
+  useEffect(() => { if (typeof endRef.current?.scrollIntoView === 'function') endRef.current.scrollIntoView({ block: 'end' }) }, [S.coach?.chat?.length, !!job, !!pending, chatting])
 
   if (!ready) return null
   const coach = S.coach || emptyCoach()
@@ -109,7 +133,8 @@ export default function CoachChat() {
       // failed, or nothing was ever built — the message asks for one; a review would only
       // answer that there is no workout to look at, which is how people got stuck.
       if (pending?.kind === 'create' || !(S.routines || []).length) await refinePlan(msg)
-      else await requestReview(msg)
+      else if (wantsReview(msg) || !canChat() || !S.coachMode) await requestReview(msg)
+      else { answerInChat(msg); setBusy(false); return }
       update(s => appendChat(s, { role: 'user', kind: 'text', text: msg }))
       setText('')
       refresh()
@@ -119,6 +144,25 @@ export default function CoachChat() {
       toast(JOB_ERRORS[e.data?.code] || e.message || t('Could not ask the Coach'))
     }
     setBusy(false)
+  }
+
+  // Anything that is not a request to change the plan is a question: answered in the thread,
+  // in a sentence or two, without reading the whole plan back as a review. The reply is written
+  // through the store, not component state, so leaving the screen while it thinks loses nothing.
+  const answerInChat = async msg => {
+    update(s => appendChat(s, { role: 'user', kind: 'text', text: msg }))
+    setText('')
+    setChatting(true)
+    try {
+      const r = await requestChat(msg)
+      update(s => appendChat(s, r.ok
+        ? { role: 'coach', kind: 'text', text: r.reply }
+        : { role: 'coach', kind: 'error', text: jobErrorText(r.errorClass, r.detail) }))
+    } catch (e) {
+      update(s => appendChat(s, { role: 'coach', kind: 'error', text: e.message || t('Could not ask the Coach') }))
+    }
+    setChatting(false)
+    refresh()
   }
 
   const ask = async (fn, line) => {
@@ -153,21 +197,7 @@ export default function CoachChat() {
   const showCohort = () => openSheet(() => <CohortSheet S={S} update={update} toast={toast} />)
 
   const idle = !job && !pending
-  const menu = () => openSheet(close => <div className="chat-menu">
-    <h3>{t('Coach')}</h3>
-    <div className="sect-b">
-      {idle && <Row icon="sparkles" iconTint="var(--acc)" title={t('Ask for a review')} subtitle={t('What would the Coach change after your last sessions?')} accessory="chevron" onClick={() => { close(); askReview() }} />}
-      {idle && !!lastWorkout && <Row icon="checkCircle" iconTint="var(--green)" title={t('Review my last workout')} subtitle={t('What went well, what to watch, what to do next time')} accessory="chevron" onClick={() => { close(); askDebrief() }} />}
-      {idle && !!(S.routines || []).length && <Row icon="wrench" iconTint="var(--orange)" title={t('Improve a routine')} subtitle={t('Pick one; the Coach works on just that')} accessory="chevron" onClick={() => { close(); pickRoutine() }} />}
-      {community && <Row icon="person" iconTint="var(--teal)" title={t('Compare with others here')} subtitle={t('Anonymous medians from this instance')} accessory="chevron" onClick={() => { close(); showCohort() }} />}
-      <Row icon="history" iconTint="var(--blue)" title={t('Everything the Coach proposed')} subtitle={t('Plans, suggestions and debriefs, kept')} accessory="chevron" onClick={() => { close(); showHistory() }} />
-      {idle && <Row icon="clipboard" iconTint="var(--indigo)" title={t('Start a new plan')} subtitle={t('A fresh plan from your answers; your workouts stay')} accessory="chevron" onClick={() => { close(); askNewPlan() }} />}
-      <Row icon="pencil" iconTint="var(--indigo)" title={t('Edit my answers')} subtitle={t('Goal, days, equipment, limits')} accessory="chevron" onClick={() => closeThenNav(close, '/coach/intake?edit=1')} />
-      <Row icon="clock" iconTint="var(--purple)" title={t('Automatic reviews')} subtitle={cadenceLabel(coach)} accessory="chevron" onClick={() => { close(); cadenceSheet(openSheet, update) }} />
-      {canRevert(S) && <Row icon="reset" iconTint="var(--blue)" title={t('Undo the last Coach changes')} accessory="chevron" onClick={() => { close(); doRevert() }} />}
-    </div>
-    <div style={{ height: 10 }} />
-  </div>)
+  const menu = () => openSheet(close => <CoachMenu close={close} idle={idle} askReview={askReview} lastWorkout={lastWorkout} askDebrief={askDebrief} pickRoutine={pickRoutine} community={community} showCohort={showCohort} showHistory={showHistory} askNewPlan={askNewPlan} cadenceSheet={cadenceSheet} coach={coach} openSheet={openSheet} update={update} doRevert={doRevert} />)
 
   const doRevert = () => confirmSheet({
     title: t('Undo the last Coach changes?'),
@@ -180,10 +210,10 @@ export default function CoachChat() {
     }
   })
 
-  const status = job ? t('thinking…') : pending ? t('has a suggestion for you') : t('here when you need it')
+  const status = job || chatting ? t('thinking…') : pending ? t('has a suggestion for you') : t('here when you need it')
   const placeholder = pending?.kind === 'create'
     ? t('What should change?')
-    : job ? t('Coach is thinking…') : t('Message the Coach…')
+    : job || chatting ? t('Coach is thinking…') : t('Message the Coach…')
 
   return <div className="narrow chat">
     <div className="chat-hdr">
@@ -202,6 +232,7 @@ export default function CoachChat() {
       {(coach.chat || []).map(m => <Message key={m.id} m={m} S={S} profile={coach.profile} openSheet={openSheet} />)}
 
       {job && <Typing S={S} kind={job.kind} coachLocal={coachLocal} config={config} />}
+      {chatting && <div className="msg coach"><div className="bub typing"><i /><i /><i /></div></div>}
 
       {pending && !job && (pending.kind === 'create'
         ? <PlanCard p={pending} S={S} update={update} toast={toast} nav={nav} refresh={refresh} />
@@ -213,17 +244,17 @@ export default function CoachChat() {
     </div>
 
     <div className="composer">
-      {idle && !busy && <div className="chips-row">
+      {idle && !busy && !chatting && <div className="chips-row">
         <button className="qchip" onClick={askReview}><Icon name="sparkles" />{t('Review my training')}</button>
         {!!lastWorkout && <button className="qchip" onClick={askDebrief}><Icon name="checkCircle" />{t('Last workout')}</button>}
         {!!(S.routines || []).length && <button className="qchip" onClick={pickRoutine}><Icon name="wrench" />{t('Improve a routine')}</button>}
         {community && <button className="qchip" onClick={showCohort}><Icon name="person" />{t('Compare')}</button>}
       </div>}
       <div className="composer-in">
-        <textarea rows={1} value={text} maxLength={maxMessageLen || 1000} placeholder={placeholder} disabled={!!job}
+        <textarea rows={1} value={text} maxLength={maxMessageLen || 1000} placeholder={placeholder} disabled={!!job || chatting}
           onChange={e => setText(e.target.value)}
           onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send() } }} />
-        <button className="send" onClick={send} disabled={!text.trim() || busy || !!job} aria-label={t('Send')}><Icon name="arrowUp" /></button>
+        <button className="send" onClick={send} disabled={!text.trim() || busy || !!job || chatting} aria-label={t('Send')}><Icon name="arrowUp" /></button>
       </div>
       {cap?.limit > 0 && <div className="composer-cap">{t('{0} of {1} Coach runs used today', cap.used, cap.limit)}</div>}
     </div>

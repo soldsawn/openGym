@@ -237,6 +237,7 @@ export const DEF = {
   // cleared) replaces that role's curated exercise-id whitelist with a single user-chosen
   // exercise id; the stamp is what lets a sync keep the choice made last (lib/sync-merge.js).
   balanceTemplate: DEFAULT_TEMPLATE_ID, balanceOverrides: {},
+  coachMode: false, // true = Sohbet destekli mod, false = Orijinal mod (persisted across restarts)
 }
 const clone = o => JSON.parse(JSON.stringify(o))
 
