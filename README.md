@@ -15,9 +15,9 @@ This is a personal fork of [DuarteSantos8/openGym](https://github.com/DuarteSant
 
 | Feature | Description |
 |---|---|
-| 💬 **Chat-supported mode** | Toggle between *Original* (Coach reviews your plan) and *Chat-supported* (ask the Coach questions inline). Switch lives in the Coach overflow menu and persists across restarts. |
-| 🌍 **Multi-language intent detection** | Coach now recognises plan-change requests in French, German, Spanish, Italian, Portuguese, Russian, Japanese and Chinese — on top of English and Turkish. |
-| 🏋️ **Updated body diagram** | Male figure replaced with the Boostcamp-derived silhouette; stroke width is a CSS variable so the outline scales correctly at any size. Female diagram is unchanged. |
+| 💬 **Chat-supported mode** | Two modes selectable from the Coach overflow menu. *Original mode* sends your message to the Coach as a plan-change request — the Coach reads it and adjusts your programme. *Chat-supported mode* lets you have a back-and-forth conversation with the Coach directly in the chat thread. Your choice is saved and restored on every app launch. |
+| 🌍 **Multi-language intent detection** | When you type a message in Original mode, the app automatically detects whether you are asking for a plan change. Detection now works in French, German, Spanish, Italian, Portuguese, Russian, Japanese and Chinese, in addition to English and Turkish — so the Coach routes your message correctly regardless of which language you write in. |
+| 🏋️ **Updated body diagram** | Male figure replaced with a cleaner Boostcamp-derived silhouette. Female diagram is unchanged. |
 | ⚡ **Higher daily Coach limit** | Daily AI Coach message limit raised from 10 → **50**. Use mindfully — each message consumes your BYOK API quota. |
 
 ---
