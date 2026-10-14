@@ -33,7 +33,8 @@ function View({ view, levels, onMuscle, selected }) {
     onMuscle(slug)
   }
   return (
-    <svg className="bm-v" viewBox={view.vb} role={onMuscle ? 'group' : 'img'}>
+    <svg className="bm-v" viewBox={view.vb} role={onMuscle ? 'group' : 'img'}
+      style={view.sw ? { '--bm-sw': view.sw, '--bm-sel': view.sw * 2.6 } : undefined}>
       {INERT.map(slug => (view.p[slug] || []).map((d, i) =>
         <path key={slug + i} className="bm-sil" d={d} />))}
       {MUSCLES.map(slug => (view.p[slug] || []).map((d, i) =>

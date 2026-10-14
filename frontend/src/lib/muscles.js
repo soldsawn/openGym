@@ -31,7 +31,7 @@ export const inMuscleOrder = list => {
 }
 
 // Drawn as the silhouette, never shaded: they carry no training load.
-export const INERT = ['head', 'hair', 'neck', 'hands', 'feet', 'knees', 'ankles']
+export const INERT = ['body', 'head', 'hair', 'neck', 'hands', 'feet', 'knees', 'ankles']
 
 // English display names; these strings are the i18n keys (see lib/i18n.js). The packs know
 // the cardio pseudo-muscle only under the dataset's own lowercase spelling, and every place
