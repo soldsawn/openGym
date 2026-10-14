@@ -342,7 +342,7 @@ export function levelsOf(load, thresholds) {
       let level = 0
       for (const rule of thresholds) {
         const matches = rule.exclusive ? value > rule.at : value >= rule.at
-        if (matches) level = Math.max(0, Math.min(4, rule.level))
+        if (matches) level = Math.max(0, Math.min(6, rule.level))
       }
       lv[m] = level
     })
@@ -353,7 +353,7 @@ export function levelsOf(load, thresholds) {
   const lv = {}
   MUSCLES.forEach(m => {
     const v = load[m] || 0
-    lv[m] = !v ? 0 : max <= 0 ? 0 : Math.max(1, Math.min(4, Math.ceil(v / max * 4)))
+    lv[m] = !v ? 0 : max <= 0 ? 0 : Math.max(1, Math.min(6, Math.ceil(v / max * 6)))
   })
   return lv
 }

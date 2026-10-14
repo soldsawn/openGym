@@ -1657,6 +1657,10 @@ body.no-tabbar #timer.working{box-shadow:inset 0 var(--hair) 0 var(--acc),0 -10p
 .bm-m.l2{fill:color-mix(in srgb,var(--acc) 56%,var(--bm-base))}
 .bm-m.l3{fill:color-mix(in srgb,var(--acc) 78%,var(--bm-base))}
 .bm-m.l4{fill:var(--acc)}
+.bm-m.l5{fill:#ffaa00}
+.bm-m.l6{fill:#fe7100}
+.hm-c.l5{background:#ffaa00}
+.hm-c.l6{background:#fe7100}
 /* Fatigue view: attention ramp - fatigued muscles highlighted (owner tweak 2026-08-06) */
 .hm-fatigue .bm-m.l4{fill:var(--red)}
 .hm-fatigue .bm-m.l3{fill:var(--orange)}

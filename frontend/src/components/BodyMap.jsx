@@ -79,6 +79,6 @@ export default function BodyMap({ load = {}, thresholds, body = 'male', onMuscle
 export function BodyMapLegend() {
   return <div className="hm-legend" aria-label={`${t('Less')} ${t('More')}`}>
     {t('Less')} <div className="hm-c l0" /><div className="hm-c l1" /><div className="hm-c l2" />
-    <div className="hm-c l3" /><div className="hm-c l4" /> {t('More')}
+    <div className="hm-c l3" /><div className="hm-c l4" /><div className="hm-c l5" /><div className="hm-c l6" /> {t('More')}
   </div>
 }
