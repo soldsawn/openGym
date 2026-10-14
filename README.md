@@ -7,11 +7,21 @@
 Plan your week, run guided workouts, log every set and your body weight,<br>
 on your phone, synced across your devices, behind your own passkey login.
 
-> **This is a fork of [DuarteSantos8/openGym](https://github.com/DuarteSantos8/openGym).**
-> Added features in this fork:
-> - **Chat-supported mode toggle** — switch between Original mode (Coach reviews and adjusts your plan) and Chat-supported mode (ask the Coach questions directly in the chat thread) from the Coach overflow menu. Setting persists across app restarts.
-> - **Multi-language intent detection** — the Coach now recognises plan-change requests written in French, German, Spanish, Italian, Portuguese, Russian, Japanese and Chinese, in addition to English and Turkish.
-> - **Updated male body diagram** — replaced with the Boostcamp-derived figure; stroke width is now a CSS variable so the outline scales correctly at any size. Female diagram is unchanged.
+---
+
+### 🍴 Fork — [soldsawn/openGym](https://github.com/soldsawn/openGym)
+
+This is a personal fork of [DuarteSantos8/openGym](https://github.com/DuarteSantos8/openGym) with the following additions:
+
+| Feature | Description |
+|---|---|
+| 💬 **Chat-supported mode** | Toggle between *Original* (Coach reviews your plan) and *Chat-supported* (ask the Coach questions inline). Switch lives in the Coach overflow menu and persists across restarts. |
+| 🌍 **Multi-language intent detection** | Coach now recognises plan-change requests in French, German, Spanish, Italian, Portuguese, Russian, Japanese and Chinese — on top of English and Turkish. |
+| 🏋️ **Updated body diagram** | Male figure replaced with the Boostcamp-derived silhouette; stroke width is a CSS variable so the outline scales correctly at any size. Female diagram is unchanged. |
+| ⚡ **Higher daily Coach limit** | Daily AI Coach message limit raised from 10 → **50**. Use mindfully — each message consumes your BYOK API quota. |
+
+---
+
 
 [![Discord](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fdiscord.com%2Fapi%2Finvites%2Fe62jY6fwVb%3Fwith_counts%3Dtrue&query=%24.approximate_member_count&suffix=%20members&label=Discord&logo=discord&logoColor=white&color=5865F2&style=for-the-badge)](https://discord.gg/e62jY6fwVb)
 [![Online](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fdiscord.com%2Fapi%2Finvites%2Fe62jY6fwVb%3Fwith_counts%3Dtrue&query=%24.approximate_presence_count&suffix=%20online&label=&logo=discord&logoColor=white&color=3BA55C&style=for-the-badge)](https://discord.gg/e62jY6fwVb)
