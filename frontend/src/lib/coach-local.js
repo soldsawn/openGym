@@ -26,11 +26,13 @@ import { nativeFetch } from './capacitor-fetch.js'
 import { getApiKey } from './coach-secrets.js'
 import { loadCoachDevice, saveCoachDevice } from './coach-device.js'
 import { planHash } from './coach.js'
+import { extractJSON } from '../../../api/coach/core/parse.js'
+import { buildChatPrompt } from './coach-chat-prompt.js'
 import { todayISO } from './format.js'
 import { t, getLang } from './i18n.js'
 
 export const ADAPTERS = { anthropic, openai, gemini, compatible }
-export const LOCAL_DAILY_CAP = 10
+export const LOCAL_DAILY_CAP = 50
 // Five minutes is right for a cloud API and wrong for a model on somebody's laptop; the
 // OpenAI-compatible endpoint is the one that may be local, so it gets the long budget.
 export const TIMEOUT_MS = 5 * 60000
@@ -40,6 +42,7 @@ const PENDING_DAYS = 14
 const HANDLE_LENGTH = 16
 
 let job = null
+let chatRun = false   // a chat question is in flight; one at a time, like a job
 let lastError = null
 let last = null   // how the most recent job ended — the same shape the server's status() reports
 // Reported to the screens through the same status shape the server answers with; a toast is
@@ -186,5 +189,56 @@ function workoutMetaOf(S, workoutId) {
   return w ? { id: w.id, d: w.d, name: w.name || null } : null
 }
 
+/* ---------- chat: a question answered in the thread, not a review ---------- */
+
+// The same data summary a review reads (payload allowlist and all), widened to the recent weeks
+// whatever the last review covered, minus the exercise library and the declined-changes list,
+// which only a plan needs. The model answers in {"reply": "..."}; nothing here can touch the plan.
+export async function localChat(S, message) {
+  if (job || chatRun) throw Object.assign(new Error(t('The Coach is already thinking about your training.')), { status: 409, code: 'busy' })
+  if (!S?.coach?.consent?.agreedAt) throw Object.assign(new Error(t('The Coach needs your go-ahead first.')), { status: 403, code: 'consent' })
+  const d = await loadCoachDevice()
+  const adapter = ADAPTERS[d.provider]
+  if (d.mode !== 'byok' || !adapter) throw Object.assign(new Error(t('The Coach isn’t set up on this phone.')), { status: 503, code: 'off' })
+  const cap = await capState()
+  if (cap.used >= cap.limit) throw Object.assign(new Error(t('The Coach is taking a breather. You’ve used today’s {0} runs on this phone.', cap.limit)), { status: 429, code: 'cap' })
+
+  chatRun = true
+  try {
+    await bumpDaily()
+    const key = await getApiKey()
+    const msg = String(message || '').trim().slice(0, 1000)
+    const payload = payloadLib.build({ ...S, coach: { ...(S.coach || {}), lastReview: null } }, {
+      handle: await handle(), kind: 'review', note: msg, lang: getLang()
+    })
+    delete payload.library
+    delete payload.userNote
+    delete payload.previouslyDeclined
+    payload.task = 'chat'
+    const parts = buildChatPrompt(payload, msg)
+    const split = adapter.spawns === false
+    const r = await adapter.invoke({
+      cfg: cfgOf(d),
+      prompt: split ? parts.user : parts.system + '\n\n---\n\n' + parts.user,
+      ...(split ? { system: parts.system, schema: null } : {}),
+      model: d.model || HTTP_PROVIDERS[d.provider].defaultModel, timeoutMs: timeoutFor(d.provider),
+      env: envOf(d, key), fetch: nativeFetch
+    })
+    if (r.timedOut) return { ok: false, errorClass: 'timeout' }
+    if (r.spawnError) return { ok: false, errorClass: 'missing', detail: String(r.stderr || '').slice(0, 300) }
+    if (r.code !== 0) {
+      const raw = String(r.stderr || r.text || '')
+      return { ok: false, errorClass: /auth|unauthor|api key|credential|token|401|403|login/i.test(raw) ? 'auth' : 'provider', detail: raw.slice(0, 300) }
+    }
+    const parsed = extractJSON(r.text)
+    let reply = !parsed.error && parsed.value && typeof parsed.value.reply === 'string' ? parsed.value.reply : null
+    // A model that ignored the wrapper and just answered: its words are still the answer.
+    const text = String(r.text || '').trim()
+    if (!reply && parsed.error && text && !/^[[{]/.test(text)) reply = text
+    reply = reply ? reply.trim().slice(0, 4000) : ''
+    return reply ? { ok: true, reply } : { ok: false, errorClass: 'unusable' }
+  } finally { chatRun = false }
+}
+
 // Test seam.
-export function _resetLocal() { job = null; lastError = null; last = null }
+export function _resetLocal() { job = null; chatRun = false; lastError = null; last = null }
