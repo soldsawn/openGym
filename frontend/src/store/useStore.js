@@ -238,6 +238,10 @@ export const DEF = {
   // exercise id; the stamp is what lets a sync keep the choice made last (lib/sync-merge.js).
   balanceTemplate: DEFAULT_TEMPLATE_ID, balanceOverrides: {},
   coachMode: false, // true = Sohbet destekli mod, false = Orijinal mod (persisted across restarts)
+  // Last selected exercise id in the Stats → Exercise progress section. Persisted so the same
+  // exercise is shown after the app restarts, rather than falling back to the highest-weight one.
+  // null = no history yet, or exercise was removed — falls back to exHist[0] as before.
+  statsExId: null,
 }
 const clone = o => JSON.parse(JSON.stringify(o))
 

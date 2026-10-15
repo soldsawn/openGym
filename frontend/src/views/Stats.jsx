@@ -407,6 +407,7 @@ export function WeeklyPlanVolume({ S }) {
 export default function Stats() {
   const nav = useNavigate()
   const S = useStore(s => s.S)
+  const update = useStore(s => s.update)
   const [range, setRange] = useState(90)
   // Plan's "Weekly muscle volume" row lands here (/stats?focus=weekly-volume). The router is a
   // HashRouter, so the query sits in the hash; the scroll waits a frame for the page's own
@@ -416,7 +417,8 @@ export default function Stats() {
     const frame = window.requestAnimationFrame(() => document.getElementById('weekly-volume')?.scrollIntoView?.({ block: 'start', behavior: 'smooth' }))
     return () => window.cancelAnimationFrame(frame)
   }, [])
-  const [exId, setExId] = useState(null)
+  const exId = useStore(s => s.S.statsExId ?? null)
+  const setExId = id => update(s => { s.statsExId = id })
   const [exMetric, setExMetric] = useState('top')
   // Exercise progress over a date range (issue #511), All by default. Only the chart follows it:
   // "Best:" and the recent sessions under it stay all-time.
