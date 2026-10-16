@@ -2294,4 +2294,7 @@ export default {
   'Month': 'Hónap',
   'Year': 'Év',
   '{0} is already logged for this day. Saving replaces it.': 'Erre a napra már {0} van rögzítve. A mentés felülírja.',
+  'Workout in progress': 'Folyamatban lévő edzés',
+  'Running-workout bar': 'Futó edzés sávja',
+  'Shows a workout left running above the tab bar, with Resume and discard.': 'A futva hagyott edzést a lapsáv fölött mutatja, folytatással és elvetéssel.',
 }

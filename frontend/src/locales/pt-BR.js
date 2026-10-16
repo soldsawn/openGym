@@ -1452,6 +1452,9 @@ export const PT_BR_OVERRIDES = {
   'Month': 'Mês',
   'Year': 'Ano',
   '{0} is already logged for this day. Saving replaces it.': 'Já há {0} registrado neste dia. Salvar substitui o valor.',
+  'Workout in progress': 'Treino em andamento',
+  'Running-workout bar': 'Barra do treino em andamento',
+  'Shows a workout left running above the tab bar, with Resume and discard.': 'Mostra acima da barra de abas um treino deixado em andamento, com Retomar e Descartar.',
 }
 
 export default { ...pt, ...PT_BR_OVERRIDES }

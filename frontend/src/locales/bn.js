@@ -2370,4 +2370,7 @@ export default {
   'Month': 'মাস',
   'Year': 'বছর',
   '{0} is already logged for this day. Saving replaces it.': 'এই দিনে {0} আগেই লগ করা আছে। সংরক্ষণ করলে সেটি বদলে যাবে।',
+  'Workout in progress': 'চলমান ওয়ার্কআউট',
+  'Running-workout bar': 'চলমান ওয়ার্কআউট বার',
+  'Shows a workout left running above the tab bar, with Resume and discard.': 'চালু রেখে যাওয়া ওয়ার্কআউট ট্যাব বারের উপরে দেখায়, আবার শুরু ও বাতিলের বোতামসহ।',
 }

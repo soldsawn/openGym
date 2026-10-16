@@ -2291,4 +2291,7 @@ export default {
   'Month': '월',
   'Year': '연도',
   '{0} is already logged for this day. Saving replaces it.': '이 날에는 이미 {0}이(가) 기록되어 있어요. 저장하면 바뀝니다.',
+  'Workout in progress': '진행 중인 운동',
+  'Running-workout bar': '진행 중인 운동 바',
+  'Shows a workout left running above the tab bar, with Resume and discard.': '진행 중으로 둔 운동을 탭 바 위에 보여 줘요. 이어서 하기와 취소 버튼이 함께 있어요.',
 }

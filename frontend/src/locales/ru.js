@@ -2295,4 +2295,7 @@ export default {
   'Month': 'Месяц',
   'Year': 'Год',
   '{0} is already logged for this day. Saving replaces it.': 'На этот день уже записано {0}. Сохранение заменит значение.',
+  'Workout in progress': 'Текущая тренировка',
+  'Running-workout bar': 'Панель текущей тренировки',
+  'Shows a workout left running above the tab bar, with Resume and discard.': 'Показывает над панелью вкладок оставленную тренировку, с кнопками «Продолжить» и «Отменить».',
 }

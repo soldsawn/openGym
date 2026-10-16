@@ -2291,4 +2291,7 @@ export default {
   'Month': 'Mois',
   'Year': 'Année',
   '{0} is already logged for this day. Saving replaces it.': '{0} est déjà enregistré ce jour-là. Enregistrer le remplace.',
+  'Workout in progress': 'Séance en cours',
+  'Running-workout bar': 'Barre de séance en cours',
+  'Shows a workout left running above the tab bar, with Resume and discard.': 'Affiche au-dessus de la barre d’onglets une séance laissée en cours, avec Reprendre et Abandonner.',
 }

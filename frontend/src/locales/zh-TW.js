@@ -2284,4 +2284,7 @@ export default {
   'Month': '月',
   'Year': '年',
   '{0} is already logged for this day. Saving replaces it.': '這一天已記錄 {0}，儲存後將會取代。',
+  'Workout in progress': '正在進行的訓練',
+  'Running-workout bar': '進行中訓練列',
+  'Shows a workout left running above the tab bar, with Resume and discard.': '在分頁列上方顯示仍在進行的訓練，可繼續或捨棄。',
 }

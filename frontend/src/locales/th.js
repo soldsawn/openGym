@@ -2302,4 +2302,7 @@ export default {
   'Month': 'เดือน',
   'Year': 'ปี',
   '{0} is already logged for this day. Saving replaces it.': 'วันดังกล่าวมีบันทึก {0} อยู่แล้ว การบันทึกจะแทนที่ค่าเดิม',
+  'Workout in progress': 'การฝึกที่กำลังทำอยู่',
+  'Running-workout bar': 'แถบการฝึกที่กำลังทำอยู่',
+  'Shows a workout left running above the tab bar, with Resume and discard.': 'แสดงการฝึกที่เปิดค้างไว้เหนือแถบแท็บ พร้อมปุ่มทำต่อและยกเลิก',
 }

@@ -2291,4 +2291,7 @@ export default {
   'Month': 'Miesiąc',
   'Year': 'Rok',
   '{0} is already logged for this day. Saving replaces it.': 'Na ten dzień zapisano już {0}. Zapisanie go zastąpi.',
+  'Workout in progress': 'Trwający trening',
+  'Running-workout bar': 'Pasek trwającego treningu',
+  'Shows a workout left running above the tab bar, with Resume and discard.': 'Pokazuje nad paskiem kart trening pozostawiony w toku, z przyciskami Wznów i Odrzuć.',
 }

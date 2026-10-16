@@ -499,6 +499,12 @@ export default function Settings({ page = null, find = null, via = null }) {
               onChange={v => update(s => { s.keepAwake = v })} />
           </Row>
         )}
+        {/* The bar above the tab bar for a workout left running (components/ActiveWorkoutBar.jsx).
+            Off, the tab bar's Start still shows the running time. */}
+        <Row icon="clock" iconTint="var(--orange)" title={t('Running-workout bar')}
+          subtitle={t('Shows a workout left running above the tab bar, with Resume and discard.')}>
+          <Switch checked={S.workoutBar !== false} onChange={v => update(s => { s.workoutBar = v })} />
+        </Row>
         {/* 'full'/'mini' is also what the tap-toggle on the workout animation writes; 'off' hides
             workout media entirely (library, detail sheet and picker thumbs are unaffected).
             Legacy/unknown values read as 'full'. */}

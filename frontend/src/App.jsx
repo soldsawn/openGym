@@ -20,6 +20,7 @@ import { MOBILE } from './lib/mobile.js'
 import { exitWorkoutEdit, startFlow } from './sheets.jsx'
 import Icon from './components/Icon.jsx'
 import TabBar from './components/TabBar.jsx'
+import ActiveWorkoutBar from './components/ActiveWorkoutBar.jsx'
 import ErrorBoundary from './components/ErrorBoundary.jsx'
 import Modals from './components/Modals.jsx'
 import Toast from './components/Toast.jsx'
@@ -237,6 +238,7 @@ function Shell() {
           would ride along with the page for the length of it. Decides for itself when to show —
           including on the sign-in screen, when the server has just ended the session. */}
       <SyncBanner />
+      {!noTabs && <ActiveWorkoutBar />}
       {!noTabs && <TabBar onStart={startFlow} />}
       <RestTimer />
       <Modals />

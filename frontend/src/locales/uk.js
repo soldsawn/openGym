@@ -2288,4 +2288,7 @@ export default {
   'Month': 'Місяць',
   'Year': 'Рік',
   '{0} is already logged for this day. Saving replaces it.': 'На цей день уже записано {0}. Збереження замінить значення.',
+  'Workout in progress': 'Поточне тренування',
+  'Running-workout bar': 'Панель поточного тренування',
+  'Shows a workout left running above the tab bar, with Resume and discard.': 'Показує над панеллю вкладок тренування, яке ти залишив, з кнопками «Продовжити» та «Скасувати».',
 }

@@ -2291,4 +2291,7 @@ export default {
   'Month': 'Mês',
   'Year': 'Ano',
   '{0} is already logged for this day. Saving replaces it.': 'Já há {0} registado neste dia. Guardar substitui-o.',
+  'Workout in progress': 'Treino em curso',
+  'Running-workout bar': 'Barra do treino em curso',
+  'Shows a workout left running above the tab bar, with Resume and discard.': 'Mostra acima da barra de separadores um treino deixado a decorrer, com Retomar e Descartar.',
 }

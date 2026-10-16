@@ -2291,4 +2291,7 @@ export default {
   'Month': 'महीना',
   'Year': 'साल',
   '{0} is already logged for this day. Saving replaces it.': 'इस दिन के लिए {0} पहले से दर्ज है। सहेजने पर यह बदल जाएगा।',
+  'Workout in progress': 'चल रहा वर्कआउट',
+  'Running-workout bar': 'चल रहे वर्कआउट की पट्टी',
+  'Shows a workout left running above the tab bar, with Resume and discard.': 'चालू छोड़े गए वर्कआउट को टैब बार के ऊपर दिखाता है, फिर से शुरू करने और हटाने के साथ।',
 }

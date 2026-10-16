@@ -2346,4 +2346,7 @@ export default {
   'Month': 'الشهر',
   'Year': 'السنة',
   '{0} is already logged for this day. Saving replaces it.': '{0} مسجّل بالفعل لهذا اليوم. الحفظ يستبدله.',
+  'Workout in progress': 'تمرين جارٍ',
+  'Running-workout bar': 'شريط التمرين الجاري',
+  'Shows a workout left running above the tab bar, with Resume and discard.': 'يعرض التمرين الذي تركته قيد التشغيل فوق شريط التبويب، مع الاستئناف والتجاهل.',
 }

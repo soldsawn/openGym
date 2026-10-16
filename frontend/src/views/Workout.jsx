@@ -51,7 +51,8 @@ import { canWorkoutCoach } from '../lib/coach-api.js'
 import { ensureWorkoutEntryKeys } from '../lib/workout-coach.js'
 import { DEMO } from '../lib/demo.js'
 import { MOBILE } from '../lib/mobile.js'
-import WorkoutCoachSheet, { rememberDiscardedWorkout } from '../components/WorkoutCoachSheet.jsx'
+import WorkoutCoachSheet from '../components/WorkoutCoachSheet.jsx'
+import { askDiscardWorkout } from '../components/ActiveWorkoutBar.jsx'
 
 // How long after a key starts a hold the same key is not yet its "Done" (#133). A USB button
 // that bounces, or a double press, sends two presses a moment apart: the first starts the hold,
@@ -1430,14 +1431,9 @@ function ActiveWorkout() {
     else exConfigSheet(ex, null, commit, null, routine, seed, null, t('Add to this workout'))
   })
   // Ending the session without saving it. The ⋯ menu's last item since the header's ✕ became the
-  // ⌄ that only leaves the screen (v1.3.11).
-  const discardWorkout = () => confirmSheet({
-    title: t('Discard workout?'), message: t('The sets you logged in this session will be lost.'), confirmText: t('Discard'), danger: true,
-    onConfirm: () => {
-      if (coachReady) rememberDiscardedWorkout(A.id)
-      update(s => { s.active = null }); stopRest(); stopWork(); nav('/home')
-    },
-  })
+  // ⌄ that only leaves the screen (v1.3.11). The same question and the same discard as the ✕ on
+  // the bar above the tab bar (ActiveWorkoutBar).
+  const discardWorkout = () => askDiscardWorkout(() => nav('/home'))
   // The header ⋯, in groups: the settings you change at the gym first (their own sheet, the same
   // values as Settings), then what to add, what to change about this workout, and Discard last.
   // Layout here stays this session's own (s.active.workoutView); the settings sheet's Layout is

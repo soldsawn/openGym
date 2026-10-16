@@ -2291,4 +2291,7 @@ export default {
   'Month': 'Ay',
   'Year': 'Yıl',
   '{0} is already logged for this day. Saving replaces it.': 'Bu gün için {0} zaten kayıtlı. Kaydedince değiştirilecek.',
+  'Workout in progress': 'Devam eden antrenman',
+  'Running-workout bar': 'Çalışan antrenman şeridi',
+  'Shows a workout left running above the tab bar, with Resume and discard.': 'Başka bir sekmedeyken süren antrenmanı alt menünün üstünde, Devam et ve silme düğmeleriyle gösterir.',
 }
