@@ -19,7 +19,7 @@ This is a personal fork of [DuarteSantos8/openGym](https://github.com/DuarteSant
 | 🌍 **Multi-language intent detection** | Essential for the *Chat-supported mode*, the app automatically detects the core intent behind your messages to distinguish whether you are asking for a training review or just chatting. This intent detection works seamlessly in French, German, Spanish, Italian, Portuguese, Russian, Japanese, and Chinese, in addition to English and Turkish—ensuring the Coach routes your message correctly regardless of the language you use. |
 | 🏋️ **Updated body diagram** | Male figure replaced with a cleaner silhouette. Female diagram is unchanged. |
 | 🎨 **7-level muscle heatmap** | Muscle balance map extended from 5 to 7 shade levels. The two new top tones (amber → deep orange) make it easier to spot which muscles you train the hardest. Max intensity threshold is unchanged. |
-| ⚡ **Higher daily Coach limit** | Daily AI Coach message limit raised from 10 → **50**. Use mindfully — each message consumes your BYOK API quota. |
+| ⚙️ **Configurable daily limit & token ceiling** | The daily AI Coach message limit and max output-token ceiling are now fully configurable on-device, giving you direct control over your BYOK API usage and quota. |
 
 ---
 
