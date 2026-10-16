@@ -17,6 +17,8 @@ const mocks = vi.hoisted(() => {
   const state = {
     S: null,
     user: null,
+    config: null,
+    workoutCoach: false,
     timer: null,
     work: null,
     startWork: vi.fn(),
@@ -40,12 +42,14 @@ const mocks = vi.hoisted(() => {
     workoutSettingsSheet: vi.fn(),
     nav: vi.fn(),
     setNoteSheet: vi.fn(),
+    openSheet: vi.fn(),
   }
   state.stopRest = vi.fn(() => { state.timer = null })
   state.stopWork = vi.fn(() => { state.work = null })
   state.storeSnapshot = () => ({
     S: state.S,
     user: state.user,
+    config: state.config,
     update: mut => {
       const next = structuredClone(state.S)
       mut(next)
@@ -61,6 +65,7 @@ const mocks = vi.hoisted(() => {
     shiftRestOwner: vi.fn(),
     startWork: state.startWork,
     toast: state.toast,
+    openSheet: state.openSheet,
   })
   return state
 })
@@ -105,6 +110,9 @@ vi.mock('../sheets.jsx', () => ({
   exerciseHistorySheet: mocks.exerciseHistorySheet,
   addRoutineToSessionSheet: vi.fn(),
 }))
+// The workout Coach runs only on a phone with its own key, or in the demo (coach-api.js
+// canWorkoutCoach); a test turns it on by setting mocks.workoutCoach.
+vi.mock('../lib/coach-api.js', async importOriginal => ({ ...(await importOriginal()), canWorkoutCoach: () => mocks.workoutCoach }))
 vi.mock('../components/Media.jsx', () => ({ default: () => null }))
 vi.mock('../components/WorkoutThumb.jsx', () => ({
   default: ({ onExpand }) => React.createElement('button', { className: 'wthumb', 'aria-label': 'Expand', onClick: onExpand }),
@@ -252,6 +260,8 @@ async function rerenderAt(cur) {
 beforeEach(() => {
   vi.clearAllMocks()
   mocks.user = null
+  mocks.config = null
+  mocks.workoutCoach = false
   mocks.timer = null
   mocks.work = null
   mocks.scrollCalls.length = 0
@@ -2727,6 +2737,34 @@ describe('workout controls: the more menu and the set menu', () => {
     expect([...container.querySelectorAll('button')].some(b => b.textContent.trim() === 'Remove exercise')).toBe(false)
     expect([...container.querySelectorAll('button')].some(b => b.textContent.trim() === '+ Drop')).toBe(false)
     expect([...container.querySelectorAll('button')].some(b => b.textContent.trim() === 'Add set')).toBe(true)
+  })
+
+  it('shows a one-tap Coach button when Coach is available and keeps the menu route', async () => {
+    mocks.user = { id: 'u1' }
+    mocks.config = { coach: { enabled: true } }
+    mocks.workoutCoach = true
+    await mount([exercise('plain-bench', [false])], 0, {
+      coach: { profile: { experience: 'beginner' }, consent: { version: 2, agreedAt: '2026-10-09' } },
+    })
+
+    const coach = container.querySelector('button[aria-label="Ask Coach about this exercise"]')
+    expect(coach).toBeTruthy()
+    expect(coach.classList.contains('iconbtn')).toBe(true)
+    expect(coach.querySelector('[data-icon="sparkles"]')).toBeTruthy()
+    expect(coach.textContent).toBe('')
+    expect(container.querySelector('button[aria-label="More"]')).toBeTruthy()
+
+    await act(async () => { coach.dispatchEvent(new dom.Event('click', { bubbles: true })) })
+    expect(mocks.openSheet).toHaveBeenCalledOnce()
+  })
+
+  it('shows no Coach button where the workout Coach cannot run (a server-paired app)', async () => {
+    mocks.user = { id: 'u1' }
+    mocks.config = { coach: { enabled: true } }
+    await mount([exercise('plain-bench', [false])], 0, {
+      coach: { profile: { experience: 'beginner' }, consent: { version: 2, agreedAt: '2026-10-09' } },
+    })
+    expect(container.querySelector('button[aria-label="Ask Coach about this exercise"]')).toBeNull()
   })
 
   it('routes swap, move, remove, warm-up and details through the More menu of that exercise', async () => {

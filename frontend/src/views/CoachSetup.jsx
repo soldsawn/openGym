@@ -63,7 +63,8 @@ export default function CoachSetup() {
 
   useEffect(() => { if (!MOBILE) nav('/settings', { replace: true }) }, [])
   useEffect(() => {
-    loadCoachDevice().then(d => { setCapText(String(dailyCapOf(d))); setTokText(String(maxTokensOf(d))) })
+    // A file that cannot be read shows the defaults, which is what the Coach then runs with.
+    loadCoachDevice().catch(() => null).then(d => { setCapText(String(dailyCapOf(d))); setTokText(String(maxTokensOf(d))) })
   }, [])
   useEffect(() => { getApiKey().then(k => setHasKey(!!k)) }, [])
   // Ask the paired server afresh: the admin may have switched the Coach on since this phone booted.

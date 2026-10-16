@@ -19,8 +19,8 @@ const STRENGTH_BANDS = [
 describe('production recovery view selectors', () => {
   it('preserves the relative balance scale when no thresholds are supplied', () => {
     const levels = levelsOf({ chest: 10, biceps: 5 })
-    expect(levels.chest).toBe(4)
-    expect(levels.biceps).toBe(2)
+    expect(levels.chest).toBe(6)    // seven levels, 0–6
+    expect(levels.biceps).toBe(3)
   })
 
   it('uses the production fatigue selector at both approved boundaries', () => {

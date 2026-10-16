@@ -68,6 +68,14 @@ const _refinePlan = async text => DEMO ? (await demo()).demoRefine(S()) : LOCAL(
 export const refinePlan = (...a) => _refinePlan(...a).then(track)
 const _requestDebrief = async workoutId => DEMO ? (await demo()).demoDebrief(S(), workoutId) : LOCAL() ? (await local()).localDebrief(S(), workoutId) : api('/api/coach/debrief', { method: 'POST', body: JSON.stringify({ workoutId: workoutId || null, lang: getLang() }) })
 export const requestDebrief = (...a) => _requestDebrief(...a).then(track)
+// A question about the workout in progress (WorkoutCoachSheet, from bbolinger/opengym #493). This
+// fork runs it on the phone with its own key, or in the demo; the server has no route for it, so
+// the workout screen only offers it where canWorkoutCoach() is true.
+export const canWorkoutCoach = () => DEMO || LOCAL()
+const _requestWorkout = async (message, session) => DEMO
+  ? (await demo()).demoWorkout(S(), message, session)
+  : (await local()).localWorkout(S(), message, session)
+export const requestWorkout = (...a) => _requestWorkout(...a).then(track)
 // A typed question answered in the thread itself (lib/coach-local.js localChat). Only a phone with
 // its own key can: a server or the demo keeps sending a typed line to the review, as it always did.
 // Not tracked like a job: the answer comes back with the call and is written into the chat there.

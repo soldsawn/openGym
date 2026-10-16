@@ -42,6 +42,10 @@ vi.mock('../lib/coach-api.js', () => ({
   resolvePending: vi.fn(() => Promise.resolve({})),
   refinePlan: vi.fn(() => Promise.resolve({})),
   requestReview: vi.fn(() => Promise.resolve({})),
+  // The typed-question chat (Chat-supported mode) is a phone-with-its-own-key path; these
+  // refusals come from a server, so a typed line goes to the review as it always did.
+  canChat: () => false,
+  requestChat: vi.fn(() => Promise.resolve({})),
   requestDebrief: vi.fn(() => Promise.resolve({})),
   requestPlan: vi.fn(() => Promise.resolve({})),
   cohortStats: vi.fn(() => Promise.resolve({ ok: false })),
