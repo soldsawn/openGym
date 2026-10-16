@@ -2284,4 +2284,8 @@ export default {
   'Workout adaptation': 'Адаптація тренування',
   'Your routine changed since then, so nothing was updated.': 'Відтоді програма змінилася, тож нічого не оновлено.',
   'Your workout in progress': 'Поточне тренування',
+  'Log a weigh-in': 'Записати зважування',
+  'Month': 'Місяць',
+  'Year': 'Рік',
+  '{0} is already logged for this day. Saving replaces it.': 'На цей день уже записано {0}. Збереження замінить значення.',
 }

@@ -2287,4 +2287,8 @@ export default {
   'Workout adaptation': '训练调整',
   'Your routine changed since then, so nothing was updated.': '你的训练日之后已更改，所以没有更新任何内容。',
   'Your workout in progress': '你正在进行的训练',
+  'Log a weigh-in': '记录体重',
+  'Month': '月',
+  'Year': '年',
+  '{0} is already logged for this day. Saving replaces it.': '这一天已记录 {0}，保存后将替换。',
 }

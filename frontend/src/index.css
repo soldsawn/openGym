@@ -2068,6 +2068,13 @@ button.wl-summary{width:100%;padding:0 0 10px;text-align:start;border-radius:var
   inset-inline-start:calc(50% + 8px);font-size:17px;font-weight:600;color:var(--label);pointer-events:none}
 .dw-read{text-align:center;font-size:34px;font-weight:700;letter-spacing:-.02em;font-variant-numeric:tabular-nums;margin:-4px 0 2px}
 .dw-foot{text-align:center;margin:-6px 0 14px;line-height:1.4}
+/* The date wheel (DateWheel.jsx, the body-weight log): day, month and year, centred in their
+   columns rather than set against a unit, the month's name given the room it needs. */
+.dw-date{max-width:360px;margin:6px auto 4px}
+.dw-date .dw-it{justify-content:center;padding-inline:4px;font-size:20px;white-space:nowrap}
+.dw-date .dw-month{flex:1.8}
+.dw-date-read{text-align:center;color:var(--label-2);margin:0 0 4px}
+.dw-date-note{text-align:center;color:var(--yellow);margin:0 0 6px;line-height:1.4}
 @media (hover:hover){.dw-it:hover{color:var(--label)}}
 
 /* ------------------------------------------------------- Settings (v1.3.11) -- */

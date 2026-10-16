@@ -2298,4 +2298,8 @@ export default {
   'Workout adaptation': 'การปรับการฝึก',
   'Your routine changed since then, so nothing was updated.': 'รูทีนของคุณเปลี่ยนไปตั้งแต่ตอนนั้น จึงไม่ได้อัปเดตอะไร',
   'Your workout in progress': 'การฝึกที่กำลังทำอยู่',
+  'Log a weigh-in': 'บันทึกน้ำหนัก',
+  'Month': 'เดือน',
+  'Year': 'ปี',
+  '{0} is already logged for this day. Saving replaces it.': 'วันดังกล่าวมีบันทึก {0} อยู่แล้ว การบันทึกจะแทนที่ค่าเดิม',
 }

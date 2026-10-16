@@ -20,6 +20,8 @@ import { syncMedia } from './lib/media-sync.js'
 import LineChart from './components/LineChart.jsx'
 import Stepper from './components/Stepper.jsx'
 import { durationSheet } from './components/DurationWheel.jsx'
+import DateWheel from './components/DateWheel.jsx'
+import { logWeighIn, weighInOn } from './lib/bodyweight-log.js'
 import { SG_NAME_MAX } from './lib/superset-meta.js'
 import { REST_MAX, fmtRest } from './lib/duration.js'
 import Icon from './components/Icon.jsx'
@@ -297,16 +299,16 @@ function BwSheet({ required, onDone, close }) {
   const unit = st.unit
   const bw = lastBW(st)
   const [v, setV] = useState(bw ? bw.w : 70)
+  // The day it is for: today, or any day before it on the date wheel (a weigh-in kept in your
+  // notes from last month). The check-in before a workout is always today's.
+  const today = todayISO()
+  const [day, setDay] = useState(today)
+  const taken = required ? null : weighInOn(st.bodyweight, day)
   const save = () => {
     const n = Math.round((v || 0) * 10) / 10
     if (!n || n <= 0) { toast(t('Enter a valid weight')); return }
     if (bwTooHeavy(n, unit)) return
-    update(s => {
-      const iso = todayISO()
-      const ex = s.bodyweight.find(b => b.d === iso)
-      if (ex) { ex.w = n; ex.t = Date.now() } else s.bodyweight.push({ d: iso, w: n, t: Date.now() })
-      s.bodyweight.sort((a, b) => (a.d < b.d ? -1 : 1))
-    })
+    update(s => { logWeighIn(s.bodyweight, required ? todayISO() : day, n) })
     close()
     if (onDone) onDone(n); else toast(t('Weight saved'))
   }
@@ -324,7 +326,15 @@ function BwSheet({ required, onDone, close }) {
           <button className="iconbtn" aria-label={t('Cancel')} onClick={() => close()}><Icon name="xmark" /></button>
         </div>
       : <h3>{t('Log body weight')}</h3>}
-    <div className="muted small">{required ? t('Slide or tap to set your weight. We ask before every workout so your curve stays honest.') : t('Today') + ', ' + fmtDate(todayISO(), true)}</div>
+    {required
+      ? <div className="muted small">{t('Slide or tap to set your weight. We ask before every workout so your curve stays honest.')}</div>
+      : <>
+        <DateWheel value={day} onChange={setDay} max={today} />
+        <div className="small dw-date-read">
+          {day === today ? t('Today') + ', ' + fmtDate(day, true) : fmtDate(day, true, day.slice(0, 4) !== today.slice(0, 4))}
+        </div>
+        {taken && <div className="small dw-date-note">{t('{0} is already logged for this day. Saving replaces it.', fmtNum(taken.w) + ' ' + unit)}</div>}
+      </>}
     <WeightInput value={v} setValue={setV} unit={unit} />
     <div style={{ height: 14 }} />
     <Button variant="primary" onClick={save}>{required ? t('Save & start workout') : t('Save')}</Button>
@@ -377,12 +387,18 @@ function WeighIns() {
   const points = useMemo(() => [...weeks].reverse()
     .map(w => ({ t: new Date(w.key + 'T12:00:00').getTime(), y: Math.round(w.avg * 100) / 100, d: w.key })), [weeks])
   const n = weeks.reduce((sum, w) => sum + w.n, 0)
+  // + opens the log sheet over this list, its date wheel free to go back to any past day; the
+  // list underneath shows the new weigh-in as soon as it is saved.
+  const head = <div className="row between" style={{ marginBottom: n ? 2 : 14 }}>
+    <h3 style={{ marginBottom: 0 }}>{t('Weigh-ins')}</h3>
+    <button className="iconbtn" aria-label={t('Log a weigh-in')} title={t('Log a weigh-in')} style={{ color: 'var(--acc)' }} onClick={() => bwSheet()}><Icon name="plus" /></button>
+  </div>
   if (!n) return <>
-    <h3>{t('Weigh-ins')}</h3>
+    {head}
     <div className="empty"><div className="ico"><Icon name="scale" /></div>{t('No weigh-ins yet. Log your weight to start the curve.')}</div>
   </>
   return <>
-    <h3 style={{ marginBottom: 2 }}>{t('Weigh-ins')}</h3>
+    {head}
     <div className="muted small" style={{ marginBottom: 10 }}>{tn('{0} weigh-in', '{0} weigh-ins', n)}</div>
     <div className="chart"><LineChart points={points} h={140} unit={st.unit} goal={st.targetW} /></div>
     <div className="small dim" style={{ marginTop: 6 }}>{t('Weekly average')}</div>

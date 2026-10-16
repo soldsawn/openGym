@@ -2280,4 +2280,8 @@ export default {
   'Workout adaptation': '訓練調整',
   'Your routine changed since then, so nothing was updated.': '你的課表之後已變更，所以沒有更新任何內容。',
   'Your workout in progress': '你正在進行的訓練',
+  'Log a weigh-in': '記錄體重',
+  'Month': '月',
+  'Year': '年',
+  '{0} is already logged for this day. Saving replaces it.': '這一天已記錄 {0}，儲存後將會取代。',
 }

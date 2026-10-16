@@ -2287,4 +2287,8 @@ export default {
   'Workout adaptation': 'Adaptação do treino',
   'Your routine changed since then, so nothing was updated.': 'A tua rotina mudou entretanto, por isso nada foi atualizado.',
   'Your workout in progress': 'O teu treino em curso',
+  'Log a weigh-in': 'Registar uma pesagem',
+  'Month': 'Mês',
+  'Year': 'Ano',
+  '{0} is already logged for this day. Saving replaces it.': 'Já há {0} registado neste dia. Guardar substitui-o.',
 }

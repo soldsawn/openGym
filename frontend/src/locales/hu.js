@@ -2290,4 +2290,8 @@ export default {
   'Workout adaptation': 'Edzés igazítása',
   'Your routine changed since then, so nothing was updated.': 'A rutinod azóta megváltozott, ezért semmi sem frissült.',
   'Your workout in progress': 'A folyamatban lévő edzésed',
+  'Log a weigh-in': 'Mérés rögzítése',
+  'Month': 'Hónap',
+  'Year': 'Év',
+  '{0} is already logged for this day. Saving replaces it.': 'Erre a napra már {0} van rögzítve. A mentés felülírja.',
 }

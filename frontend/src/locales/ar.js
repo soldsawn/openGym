@@ -2342,4 +2342,8 @@ export default {
   'Workout adaptation': 'تعديل التمرين',
   'Your routine changed since then, so nothing was updated.': 'تغيّر روتينك منذ ذلك الحين، لذلك لم يتم تحديث أي شيء.',
   'Your workout in progress': 'تمرينك الجاري',
+  'Log a weigh-in': 'تسجيل وزن',
+  'Month': 'الشهر',
+  'Year': 'السنة',
+  '{0} is already logged for this day. Saving replaces it.': '{0} مسجّل بالفعل لهذا اليوم. الحفظ يستبدله.',
 }

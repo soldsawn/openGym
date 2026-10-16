@@ -2287,4 +2287,8 @@ export default {
   'Workout adaptation': '운동 조정',
   'Your routine changed since then, so nothing was updated.': '그 사이 루틴이 바뀌어서 아무것도 업데이트하지 않았어요.',
   'Your workout in progress': '진행 중인 운동',
+  'Log a weigh-in': '체중 기록',
+  'Month': '월',
+  'Year': '연도',
+  '{0} is already logged for this day. Saving replaces it.': '이 날에는 이미 {0}이(가) 기록되어 있어요. 저장하면 바뀝니다.',
 }

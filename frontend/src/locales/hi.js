@@ -2287,4 +2287,8 @@ export default {
   'Workout adaptation': 'वर्कआउट में बदलाव',
   'Your routine changed since then, so nothing was updated.': 'तब से आपका रूटीन बदल गया है, इसलिए कुछ भी अपडेट नहीं हुआ।',
   'Your workout in progress': 'आपका चल रहा वर्कआउट',
+  'Log a weigh-in': 'वज़न दर्ज करें',
+  'Month': 'महीना',
+  'Year': 'साल',
+  '{0} is already logged for this day. Saving replaces it.': 'इस दिन के लिए {0} पहले से दर्ज है। सहेजने पर यह बदल जाएगा।',
 }

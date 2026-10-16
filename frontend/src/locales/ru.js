@@ -2291,4 +2291,8 @@ export default {
   'Workout adaptation': 'Адаптация тренировки',
   'Your routine changed since then, so nothing was updated.': 'Программа с тех пор изменилась, поэтому ничего не обновлено.',
   'Your workout in progress': 'Текущая тренировка',
+  'Log a weigh-in': 'Записать взвешивание',
+  'Month': 'Месяц',
+  'Year': 'Год',
+  '{0} is already logged for this day. Saving replaces it.': 'На этот день уже записано {0}. Сохранение заменит значение.',
 }

@@ -2366,4 +2366,8 @@ export default {
   'Workout adaptation': 'ওয়ার্কআউট মানিয়ে নেওয়া',
   'Your routine changed since then, so nothing was updated.': 'তারপর থেকে আপনার রুটিন বদলেছে, তাই কিছুই আপডেট হয়নি।',
   'Your workout in progress': 'আপনার চলমান ওয়ার্কআউট',
+  'Log a weigh-in': 'ওজন লগ করুন',
+  'Month': 'মাস',
+  'Year': 'বছর',
+  '{0} is already logged for this day. Saving replaces it.': 'এই দিনে {0} আগেই লগ করা আছে। সংরক্ষণ করলে সেটি বদলে যাবে।',
 }

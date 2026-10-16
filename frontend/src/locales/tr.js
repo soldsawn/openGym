@@ -2287,4 +2287,8 @@ export default {
   'Workout adaptation': 'Antrenman uyarlaması',
   'Your routine changed since then, so nothing was updated.': 'Rutinin o zamandan beri değişti, bu yüzden hiçbir şey güncellenmedi.',
   'Your workout in progress': 'Devam eden antrenmanın',
+  'Log a weigh-in': 'Kilo kaydı ekle',
+  'Month': 'Ay',
+  'Year': 'Yıl',
+  '{0} is already logged for this day. Saving replaces it.': 'Bu gün için {0} zaten kayıtlı. Kaydedince değiştirilecek.',
 }

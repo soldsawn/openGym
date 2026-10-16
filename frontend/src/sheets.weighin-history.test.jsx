@@ -1,7 +1,7 @@
 // @vitest-environment happy-dom
 // Discord 'Weight': "click on the body weight log to see the weight history and weekly average".
 import React, { act } from 'react'
-import { afterEach, beforeEach, describe, expect, it } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { createRoot } from 'react-dom/client'
 import { DEF, useStore } from './store/useStore.js'
 import { useUI } from './store/useUI.js'
@@ -117,5 +117,58 @@ describe('weigh-ins sheet', () => {
     install({ bodyweight: clone(LOG).slice(0, 2) })
     bwSheet()
     expect(button(mountTopSheet(), 'All weigh-ins')).toBeUndefined()
+  })
+})
+
+// A weigh-in kept in your notes from last month goes on its own day, from the log sheet's date
+// wheel or the list's +. Turned with the arrow keys here, as a keyboard or a screen reader does.
+describe('a weigh-in on a past day', () => {
+  beforeEach(() => { vi.useFakeTimers({ toFake: ['Date'] }); vi.setSystemTime(new Date('2026-09-14T10:00:00')) })
+  afterEach(() => { vi.useRealTimers() })
+  const turn = (host, label, key) => act(() => {
+    host.querySelector(`[role="spinbutton"][aria-label="${label}"]`).dispatchEvent(new KeyboardEvent('keydown', { key, bubbles: true }))
+  })
+
+  it('is opened from the list\'s +, over the list', () => {
+    weighInsSheet()
+    const list = mountTopSheet()
+    act(() => { list.querySelector('button[aria-label="Log a weigh-in"]').click() })
+    expect(useUI.getState().sheets).toHaveLength(2)
+    expect(mountTopSheet().querySelector('.dw-date')).toBeTruthy()
+  })
+
+  it('saves on the day the wheel is turned to, in date order', () => {
+    bwSheet()
+    const log = mountTopSheet()
+    expect(log.textContent).toContain('Today')
+    turn(log, 'Day', 'ArrowDown'); turn(log, 'Day', 'ArrowDown')           // 12 September
+    turn(log, 'Day', 'ArrowDown')                                            // 11 September
+    expect(log.textContent).not.toContain('Today')
+    act(() => { button(log, 'Save').click() })
+    expect(useStore.getState().S.bodyweight.map(b => b.d)).toEqual(['2026-09-01', '2026-09-03', '2026-09-07', '2026-09-09', '2026-09-11', '2026-09-13'])
+  })
+
+  it('says when the day already has a weigh-in, and saving replaces it', () => {
+    bwSheet()
+    const log = mountTopSheet()
+    expect(log.querySelector('.dw-date-note')).toBeNull()
+    turn(log, 'Day', 'ArrowDown')                                            // 13 September: 79 kg
+    expect(log.querySelector('.dw-date-note').textContent).toContain('79 kg is already logged')
+    act(() => { button(log, 'Save').click() })
+    expect(useStore.getState().S.bodyweight.filter(b => b.d === '2026-09-13')).toHaveLength(1)
+    expect(useStore.getState().S.bodyweight).toHaveLength(5)
+  })
+
+  it('cannot go past today', () => {
+    bwSheet()
+    const log = mountTopSheet()
+    turn(log, 'Day', 'ArrowUp')
+    turn(log, 'Month', 'ArrowUp')
+    expect(log.textContent).toContain('Today')
+  })
+
+  it('is not offered by the check-in before a workout, which is always today\'s', () => {
+    bwSheet({ required: true })
+    expect(mountTopSheet().querySelector('.dw-date')).toBeNull()
   })
 })

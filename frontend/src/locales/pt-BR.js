@@ -1448,6 +1448,10 @@ export const PT_BR_OVERRIDES = {
   'Tokens per answer ({0})': 'Tokens por resposta ({0})',
   'These limits apply to every Coach request this phone makes. Raise the output limit if answers get cut off, which can happen with models that think before they answer.': 'Esses limites valem para cada solicitação ao Coach feita por este celular. Aumente o limite de saída se as respostas forem cortadas, o que pode acontecer com modelos que pensam antes de responder.',
   'Raise the output limit under Settings → AI Coach.': 'Aumente o limite de saída em Configurações → Treinador IA.',
+  'Log a weigh-in': 'Registrar uma pesagem',
+  'Month': 'Mês',
+  'Year': 'Ano',
+  '{0} is already logged for this day. Saving replaces it.': 'Já há {0} registrado neste dia. Salvar substitui o valor.',
 }
 
 export default { ...pt, ...PT_BR_OVERRIDES }

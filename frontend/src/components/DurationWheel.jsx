@@ -36,7 +36,7 @@ const pad2 = n => String(n).padStart(2, '0')
  * rest on another row. `nonce` re-syncs the wheel to `index` after a pick the parent clamped.
  * `rowRef.current()` answers the row under the band right now, settled or not.
  */
-export function WheelColumn({ count, index, onPick, label, unit, format = String, valueText, disabledAt, step = 10, nonce = 0, rowRef }) {
+export function WheelColumn({ count, index, onPick, label, unit, format = String, valueText, disabledAt, step = 10, nonce = 0, rowRef, className = '' }) {
   const scroller = useRef(null)
   const live = useRef(index)          // the row under the band right now
   const touching = useRef(false)
@@ -176,7 +176,7 @@ export function WheelColumn({ count, index, onPick, label, unit, format = String
   }
 
   return (
-    <div className="dw-col" role="spinbutton" tabIndex={0} aria-label={label}
+    <div className={'dw-col' + (className ? ' ' + className : '')} role="spinbutton" tabIndex={0} aria-label={label}
       aria-valuenow={index} aria-valuemin={0} aria-valuemax={count - 1} aria-valuetext={valueText}
       onKeyDown={key}>
       <div className="dw-scroll" ref={scroller}>
