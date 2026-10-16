@@ -45,6 +45,10 @@ describe('insightsFor', () => {
     expect(i.bodyweight.delta).toBe(-1)
     expect(i.bodyweight.goal).toBe(80)
     expect(i.bodyweight.last).toBe(83)
+    // On the day each weigh-in is for, even one typed long after (its `t` in October).
+    const late = S()
+    late.bodyweight[1].t = new Date('2026-10-17T02:00:00').getTime()
+    expect(insightsFor(late, win).bodyweight.points.map(p => p.t)).toEqual([new Date('2026-08-02T12:00:00').getTime(), new Date('2026-08-10T12:00:00').getTime()])
   })
   it('tracks estimated 1RM first → last for exercises with two or more sessions, most-trained first', () => {
     const i = insightsFor(S(), win, { topN: 1 })

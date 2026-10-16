@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { logWeighIn, weighInOn } from './bodyweight-log.js'
+import { logWeighIn, weighInOn, weighInPoint, weighInTime } from './bodyweight-log.js'
 
 describe('a weigh-in on any day', () => {
   it('adds a past day in date order, not at the end', () => {
@@ -13,6 +13,19 @@ describe('a weigh-in on any day', () => {
     const list = [{ d: '2026-09-16', w: 80, t: 1 }]
     expect(logWeighIn(list, '2026-09-16', 79.6, 5)).toBe('replaced')
     expect(list).toEqual([{ d: '2026-09-16', w: 79.6, t: 5 }])
+  })
+
+  // The flat curve on Home: July's weigh-ins typed in October were plotted at their `t`, all on
+  // the same October night, so the line ran from one pile to the next.
+  it('sits on a chart at the day it is for, not the moment it was typed', () => {
+    const typedTonight = new Date('2026-10-17T02:00:00').getTime()
+    const july = { d: '2026-07-12', w: 75.4, t: typedTonight }
+    expect(weighInTime(july)).toBe(new Date('2026-07-12T12:00:00').getTime())
+    expect(weighInPoint(july)).toEqual({ t: new Date('2026-07-12T12:00:00').getTime(), y: 75.4, d: '2026-07-12' })
+    const log = [july, { d: '2026-08-29', w: 80.3, t: typedTonight }, { d: '2026-10-14', w: 81.5, t: new Date('2026-10-14T08:00:00').getTime() }]
+    const xs = log.map(weighInTime)
+    expect([...xs].sort((a, b) => a - b)).toEqual(xs)          // in date order along the axis
+    expect(new Set(xs).size).toBe(3)                           // none piled on another
   })
 
   it('finds the weigh-in of a day, and nothing for a day without one', () => {
