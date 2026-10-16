@@ -24,7 +24,7 @@ import gemini from '../../../api/coach/core/adapters/gemini.js'
 import compatible from '../../../api/coach/core/adapters/compatible.js'
 import { nativeFetch } from './capacitor-fetch.js'
 import { getApiKey } from './coach-secrets.js'
-import { loadCoachDevice, saveCoachDevice } from './coach-device.js'
+import { loadCoachDevice, saveCoachDevice, dailyCapOf, maxTokensOf, DAILY_CAP_DEFAULT } from './coach-device.js'
 import { planHash } from './coach.js'
 import { extractJSON } from '../../../api/coach/core/parse.js'
 import { buildChatPrompt } from './coach-chat-prompt.js'
@@ -32,7 +32,8 @@ import { todayISO } from './format.js'
 import { t, getLang } from './i18n.js'
 
 export const ADAPTERS = { anthropic, openai, gemini, compatible }
-export const LOCAL_DAILY_CAP = 50
+// The default; the phone's own limit (Settings → AI Coach) is dailyCapOf(device).
+export const LOCAL_DAILY_CAP = DAILY_CAP_DEFAULT
 // Five minutes is right for a cloud API and wrong for a model on somebody's laptop; the
 // OpenAI-compatible endpoint is the one that may be local, so it gets the long budget.
 export const TIMEOUT_MS = 5 * 60000
@@ -40,6 +41,11 @@ export const LOCAL_ENDPOINT_TIMEOUT_MS = 25 * 60000
 export const timeoutFor = provider => (provider === 'compatible' ? LOCAL_ENDPOINT_TIMEOUT_MS : TIMEOUT_MS)
 const PENDING_DAYS = 14
 const HANDLE_LENGTH = 16
+
+// A cut-off answer is the one failure the person can fix on the spot, so it says where.
+const hinted = detail => (detail && /cut off at the output limit/i.test(detail)
+  ? detail + '\n' + t('Raise the output limit under Settings → AI Coach.')
+  : detail)
 
 let job = null
 let chatRun = false   // a chat question is in flight; one at a time, like a job
@@ -76,7 +82,7 @@ async function capState() {
   const d = await loadCoachDevice()
   const today = todayISO()
   const used = d.daily && d.daily.d === today ? d.daily.n : 0
-  return { used, limit: LOCAL_DAILY_CAP }
+  return { used, limit: dailyCapOf(d) }
 }
 async function bumpDaily() {
   const { used } = await capState()
@@ -151,7 +157,7 @@ async function run(S, kind, opts, d, adapter) {
   const attempt = await runPipeline({
     adapter, cfg: cfgOf(d), kind, payload,
     model: d.model || HTTP_PROVIDERS[d.provider].defaultModel, timeoutMs: timeoutFor(d.provider),
-    invokeOpts: { env: envOf(d, key), fetch: nativeFetch }
+    invokeOpts: { env: envOf(d, key), fetch: nativeFetch, maxTokens: maxTokensOf(d) }
   })
   if (!attempt.ok) {
     // There is no admin card on a phone, so the reason has to reach the person holding it:
@@ -159,9 +165,9 @@ async function run(S, kind, opts, d, adapter) {
     const detail = attempt.detail || (Array.isArray(attempt.errors) && attempt.errors.length
       ? attempt.errors.slice(0, 3).map(String).join(' · ').slice(0, 300)
       : null)
-    lastError = { errorClass: attempt.errorClass, detail }
+    lastError = { errorClass: attempt.errorClass, detail: hinted(detail) }
     last = { id: job.id, kind, outcome: 'failed', errorClass: attempt.errorClass, at: Date.now() }
-    if (notify) notify({ kind: 'failed', errorClass: attempt.errorClass, detail })
+    if (notify) notify({ kind: 'failed', errorClass: attempt.errorClass, detail: hinted(detail) })
     return
   }
   if (attempt.nochange) {
@@ -222,13 +228,13 @@ export async function localChat(S, message) {
       prompt: split ? parts.user : parts.system + '\n\n---\n\n' + parts.user,
       ...(split ? { system: parts.system, schema: null } : {}),
       model: d.model || HTTP_PROVIDERS[d.provider].defaultModel, timeoutMs: timeoutFor(d.provider),
-      env: envOf(d, key), fetch: nativeFetch
+      env: envOf(d, key), fetch: nativeFetch, maxTokens: maxTokensOf(d)
     })
     if (r.timedOut) return { ok: false, errorClass: 'timeout' }
     if (r.spawnError) return { ok: false, errorClass: 'missing', detail: String(r.stderr || '').slice(0, 300) }
     if (r.code !== 0) {
       const raw = String(r.stderr || r.text || '')
-      return { ok: false, errorClass: /auth|unauthor|api key|credential|token|401|403|login/i.test(raw) ? 'auth' : 'provider', detail: raw.slice(0, 300) }
+      return { ok: false, errorClass: /auth|unauthor|api key|credential|token|401|403|login/i.test(raw) ? 'auth' : 'provider', detail: hinted(raw.slice(0, 300)) }
     }
     const parsed = extractJSON(r.text)
     let reply = !parsed.error && parsed.value && typeof parsed.value.reply === 'string' ? parsed.value.reply : null

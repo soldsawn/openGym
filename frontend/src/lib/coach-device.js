@@ -14,7 +14,27 @@ const FILE = 'opengym-coach.json'
 
 export const COACH_MODES = ['off', 'server', 'byok']
 
-const DEFAULTS = { mode: 'off', provider: null, model: null, baseUrl: null, handle: null, daily: null, pending: null }
+// The two limits a person can set for their own account: how many Coach requests a day this
+// phone makes, and how long one answer may be (the provider's output-token ceiling). Stored as
+// null until they are changed, so a phone that never touched them keeps following the default.
+export const DAILY_CAP_DEFAULT = 50
+export const DAILY_CAP_MIN = 1
+export const DAILY_CAP_MAX = 500
+// 16000 is what api/coach/core/adapters/http.js asks for when nothing is passed.
+export const MAX_TOKENS_DEFAULT = 16000
+export const MAX_TOKENS_MIN = 1000
+export const MAX_TOKENS_MAX = 64000
+
+/** A whole number inside [min, max]; anything that is not a number, or is empty, is `fallback`. */
+export function clampInt(value, min, max, fallback) {
+  if (value == null || String(value).trim() === '') return fallback
+  const n = Math.round(Number(value))
+  return Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : fallback
+}
+export const dailyCapOf = d => clampInt(d && d.dailyCap, DAILY_CAP_MIN, DAILY_CAP_MAX, DAILY_CAP_DEFAULT)
+export const maxTokensOf = d => clampInt(d && d.maxTokens, MAX_TOKENS_MIN, MAX_TOKENS_MAX, MAX_TOKENS_DEFAULT)
+
+const DEFAULTS = { mode: 'off', provider: null, model: null, baseUrl: null, handle: null, daily: null, pending: null, dailyCap: null, maxTokens: null }
 
 let cache = null
 export async function loadCoachDevice() {

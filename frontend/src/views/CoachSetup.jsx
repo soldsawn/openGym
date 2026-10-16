@@ -17,6 +17,10 @@ import { t } from '../lib/i18n.js'
 import { MOBILE } from '../lib/mobile.js'
 import { CATEGORY_TEXT } from '../lib/coach.js'
 import { getApiKey, setApiKey, clearApiKey } from '../lib/coach-secrets.js'
+import {
+  loadCoachDevice, saveCoachDevice, dailyCapOf, maxTokensOf, clampInt,
+  DAILY_CAP_DEFAULT, DAILY_CAP_MIN, DAILY_CAP_MAX, MAX_TOKENS_DEFAULT, MAX_TOKENS_MIN, MAX_TOKENS_MAX
+} from '../lib/coach-device.js'
 import { HTTP_PROVIDERS, HTTP_PROVIDER_IDS, baseUrlFor, validateBaseUrl } from '../../../api/coach/core/providers.js'
 import { DATA_CATEGORIES } from '../../../api/coach/core/categories.js'
 import { ConnectSheet } from './MobileOnboarding.jsx'
@@ -54,8 +58,13 @@ export default function CoachSetup() {
   const [models, setModels] = useState(null)
   const [step, setStep] = useState(-1)                     // -1 idle, 0..2 running, 3 done
   const [busy, setBusy] = useState(false)
+  const [capText, setCapText] = useState('')                // the two limits, as typed
+  const [tokText, setTokText] = useState('')
 
   useEffect(() => { if (!MOBILE) nav('/settings', { replace: true }) }, [])
+  useEffect(() => {
+    loadCoachDevice().then(d => { setCapText(String(dailyCapOf(d))); setTokText(String(maxTokensOf(d))) })
+  }, [])
   useEffect(() => { getApiKey().then(k => setHasKey(!!k)) }, [])
   // Ask the paired server afresh: the admin may have switched the Coach on since this phone booted.
   useEffect(() => { if (user) refreshConfig() }, [user])
@@ -120,6 +129,18 @@ export default function CoachSetup() {
       toast(e?.message || t('Could not connect'))
     } finally { setBusy(false) }
   }
+
+  // A limit is saved when the field is left: out of range is pulled in, empty goes back to the
+  // default, and the field shows what was actually kept.
+  const commitLimit = async (text, setText, key, min, max, fallback) => {
+    const n = clampInt(text, min, max, fallback)
+    setText(String(n))
+    try { await saveCoachDevice({ [key]: n }) } catch (e) { if (e?.message) toast(e.message) }
+  }
+  const limitField = (value, setValue, onDone) => <input className="input" type="text" inputMode="numeric" pattern="[0-9]*"
+    enterKeyHint="done" autoComplete="off" value={value} style={{ width: 96, textAlign: 'right' }}
+    onChange={e => setValue(e.target.value.replace(/\D/g, ''))} onBlur={onDone}
+    onKeyDown={e => { if (e.key === 'Enter') e.currentTarget.blur() }} />
 
   const turnOff = async () => {
     await clearApiKey(); setHasKey(false)
@@ -210,7 +231,16 @@ export default function CoachSetup() {
       </div>
     </>}
 
-    {coachLocal?.mode && coachLocal.mode !== 'off' && <Section title={t('Controls')}>
+    {coachLocal?.mode && coachLocal.mode !== 'off' && <Section title={t('Controls')}
+      footer={coachLocal.mode === 'byok' ? t('These limits apply to every Coach request this phone makes. Raise the output limit if answers get cut off, which can happen with models that think before they answer.') : null}>
+      {coachLocal.mode === 'byok' && <>
+        <Row icon="clock" iconTint="var(--purple)" title={t('Daily limit')} subtitle={t('Requests per day ({0})', `${DAILY_CAP_MIN}–${DAILY_CAP_MAX}`)}>
+          {limitField(capText, setCapText, () => commitLimit(capText, setCapText, 'dailyCap', DAILY_CAP_MIN, DAILY_CAP_MAX, DAILY_CAP_DEFAULT))}
+        </Row>
+        <Row icon="sparkles" iconTint="var(--teal)" title={t('Output limit')} subtitle={t('Tokens per answer ({0})', `${MAX_TOKENS_MIN}–${MAX_TOKENS_MAX}`)}>
+          {limitField(tokText, setTokText, () => commitLimit(tokText, setTokText, 'maxTokens', MAX_TOKENS_MIN, MAX_TOKENS_MAX, MAX_TOKENS_DEFAULT))}
+        </Row>
+      </>}
       <Row icon="signOut" iconTint="var(--red)" title={t('Turn the Coach off on this phone')} danger onClick={turnOff} />
     </Section>}
   </div>
