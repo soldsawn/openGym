@@ -2242,4 +2242,11 @@ export default {
   'Your sports watch, calling you back.': 'Ваш спортивний годинник кличе вас назад.',
   'Coach wants you back on the bar.': 'Тренер чекає вас назад біля штанги.',
   'Gentle, for headphones or a quiet room.': 'Тихий, для навушників або спокійної кімнати.',
+  // --- Coach limits on the phone ---
+  'Daily limit': 'Денний ліміт',
+  'Output limit': 'Ліміт відповіді',
+  'Requests per day ({0})': 'Запитів на день ({0})',
+  'Tokens per answer ({0})': 'Токенів на відповідь ({0})',
+  'These limits apply to every Coach request this phone makes. Raise the output limit if answers get cut off, which can happen with models that think before they answer.': 'Ці ліміти діють для кожного запиту до Coach з цього телефона. Збільште ліміт відповіді, якщо відповіді обриваються: так буває з моделями, які «думають» перед відповіддю.',
+  'Raise the output limit under Settings → AI Coach.': 'Збільште ліміт відповіді в розділі Налаштування → ШІ-тренер.',
 }

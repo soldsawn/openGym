@@ -2256,4 +2256,11 @@ export default {
   'Your sports watch, calling you back.': 'นาฬิกาสปอร์ตเรียกคุณกลับมาแล้ว',
   'Coach wants you back on the bar.': 'โค้ชอยากให้คุณกลับมาที่บาร์',
   'Gentle, for headphones or a quiet room.': 'เบา ๆ สำหรับหูฟังหรือห้องที่เงียบ',
+  // --- Coach limits on the phone ---
+  'Daily limit': 'ขีดจำกัดรายวัน',
+  'Output limit': 'ขีดจำกัดเอาต์พุต',
+  'Requests per day ({0})': 'คำขอต่อวัน ({0})',
+  'Tokens per answer ({0})': 'โทเค็นต่อคำตอบ ({0})',
+  'These limits apply to every Coach request this phone makes. Raise the output limit if answers get cut off, which can happen with models that think before they answer.': 'ขีดจำกัดเหล่านี้ใช้กับทุกคำขอที่โทรศัพท์เครื่องนี้ส่งถึงโค้ช หากคำตอบถูกตัดกลางคัน ให้เพิ่มขีดจำกัดเอาต์พุต ซึ่งอาจเกิดกับโมเดลที่คิดก่อนตอบ',
+  'Raise the output limit under Settings → AI Coach.': 'เพิ่มขีดจำกัดเอาต์พุตได้ที่ ตั้งค่า → โค้ช AI',
 }

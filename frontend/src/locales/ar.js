@@ -2300,4 +2300,11 @@ export default {
   'Your sports watch, calling you back.': 'ساعتك الرياضية تناديك للعودة.',
   'Coach wants you back on the bar.': 'المدرب يريدك أن تعود إلى البار.',
   'Gentle, for headphones or a quiet room.': 'هادئ، للسماعات أو لغرفة هادئة.',
+  // --- Coach limits on the phone ---
+  'Daily limit': 'الحد اليومي',
+  'Output limit': 'حد المخرجات',
+  'Requests per day ({0})': 'الطلبات في اليوم ({0})',
+  'Tokens per answer ({0})': 'الرموز لكل إجابة ({0})',
+  'These limits apply to every Coach request this phone makes. Raise the output limit if answers get cut off, which can happen with models that think before they answer.': 'تنطبق هذه الحدود على كل طلب يرسله هذا الهاتف إلى المدرب. ارفع حد المخرجات إذا كانت الإجابات تنقطع، وهو ما قد يحدث مع النماذج التي تفكر قبل أن تجيب.',
+  'Raise the output limit under Settings → AI Coach.': 'ارفع حد المخرجات من الإعدادات ← مدرب الذكاء الاصطناعي.',
 }
