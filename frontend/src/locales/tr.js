@@ -2245,4 +2245,11 @@ export default {
   'Your sports watch, calling you back.': 'Spor saatin seni geri çağırıyor.',
   'Coach wants you back on the bar.': 'Koç seni bara geri bekliyor.',
   'Gentle, for headphones or a quiet room.': 'Sakin, kulaklık ya da sessiz bir oda için.',
+  // --- Coach limits on the phone ---
+  'Daily limit': 'Günlük sınır',
+  'Output limit': 'Çıktı sınırı',
+  'Requests per day ({0})': 'Günlük istek sayısı ({0})',
+  'Tokens per answer ({0})': 'Cevap başına token ({0})',
+  'These limits apply to every Coach request this phone makes. Raise the output limit if answers get cut off, which can happen with models that think before they answer.': 'Bu sınırlar, bu telefonun yaptığı her Koç isteği için geçerlidir. Cevaplar yarıda kesiliyorsa çıktı sınırını artır; cevap vermeden önce düşünen modellerde bu olabilir.',
+  'Raise the output limit under Settings → AI Coach.': 'Çıktı sınırını Ayarlar → Yapay Zekâ Koçu bölümünden artır.',
 }

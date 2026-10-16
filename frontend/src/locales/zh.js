@@ -2245,4 +2245,11 @@ export default {
   'Your sports watch, calling you back.': '你的运动手表在叫你回来。',
   'Coach wants you back on the bar.': '教练等你回到杠铃前。',
   'Gentle, for headphones or a quiet room.': '轻柔，适合耳机或安静的房间。',
+  // --- Coach limits on the phone ---
+  'Daily limit': '每日上限',
+  'Output limit': '输出上限',
+  'Requests per day ({0})': '每日请求数（{0}）',
+  'Tokens per answer ({0})': '每次回答的 token 数（{0}）',
+  'These limits apply to every Coach request this phone makes. Raise the output limit if answers get cut off, which can happen with models that think before they answer.': '这些上限适用于这部手机发出的每一次教练请求。如果回答被截断，请提高输出上限；会先思考再回答的模型可能出现这种情况。',
+  'Raise the output limit under Settings → AI Coach.': '请在 设置 → AI 教练 中提高输出上限。',
 }

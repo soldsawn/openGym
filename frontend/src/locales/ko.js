@@ -2245,4 +2245,11 @@ export default {
   'Your sports watch, calling you back.': '스포츠 시계가 다시 부르고 있어요.',
   'Coach wants you back on the bar.': '코치가 바 앞으로 돌아오래요.',
   'Gentle, for headphones or a quiet room.': '이어폰이나 조용한 곳에 어울려요.',
+  // --- Coach limits on the phone ---
+  'Daily limit': '일일 한도',
+  'Output limit': '출력 한도',
+  'Requests per day ({0})': '하루 요청 수 ({0})',
+  'Tokens per answer ({0})': '응답당 토큰 ({0})',
+  'These limits apply to every Coach request this phone makes. Raise the output limit if answers get cut off, which can happen with models that think before they answer.': '이 한도는 이 휴대폰이 보내는 모든 코치 요청에 적용됩니다. 응답이 중간에 잘리면 출력 한도를 늘리세요. 답하기 전에 생각하는 모델에서 이런 일이 생길 수 있습니다.',
+  'Raise the output limit under Settings → AI Coach.': '설정 → AI 코치에서 출력 한도를 늘리세요.',
 }

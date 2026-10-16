@@ -2324,4 +2324,11 @@ export default {
   'Your sports watch, calling you back.': 'আপনার স্পোর্টস ঘড়ি আপনাকে ফিরে ডাকছে।',
   'Coach wants you back on the bar.': 'কোচ আপনাকে আবার বারে চান।',
   'Gentle, for headphones or a quiet room.': 'মৃদু, হেডফোন বা শান্ত ঘরের জন্য।',
+  // --- Coach limits on the phone ---
+  'Daily limit': 'দৈনিক সীমা',
+  'Output limit': 'আউটপুট সীমা',
+  'Requests per day ({0})': 'প্রতিদিনের অনুরোধ ({0})',
+  'Tokens per answer ({0})': 'প্রতি উত্তরে টোকেন ({0})',
+  'These limits apply to every Coach request this phone makes. Raise the output limit if answers get cut off, which can happen with models that think before they answer.': 'এই সীমাগুলো এই ফোন থেকে করা প্রতিটি কোচ অনুরোধে প্রযোজ্য। উত্তর মাঝপথে কেটে গেলে আউটপুট সীমা বাড়ান; উত্তর দেওয়ার আগে “ভাবে” এমন মডেলে এটা হতে পারে।',
+  'Raise the output limit under Settings → AI Coach.': 'আউটপুট সীমা বাড়ান: সেটিংস → AI কোচ।',
 }

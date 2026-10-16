@@ -1408,4 +1408,12 @@ export const PT_BR_OVERRIDES = {
   'Releases are checked on GitHub. The download is verified against its checksum before the installer opens.': 'As versões são verificadas no GitHub. O download é conferido pela soma de verificação antes de abrir o instalador.',
 }
 
-export default { ...pt, ...PT_BR_OVERRIDES }
+export default { ...pt, ...PT_BR_OVERRIDES,
+  // --- Coach limits on the phone ---
+  'Daily limit': 'Limite diário',
+  'Output limit': 'Limite de saída',
+  'Requests per day ({0})': 'Solicitações por dia ({0})',
+  'Tokens per answer ({0})': 'Tokens por resposta ({0})',
+  'These limits apply to every Coach request this phone makes. Raise the output limit if answers get cut off, which can happen with models that think before they answer.': 'Esses limites valem para cada solicitação ao Coach feita por este celular. Aumente o limite de saída se as respostas forem cortadas, o que pode acontecer com modelos que pensam antes de responder.',
+  'Raise the output limit under Settings → AI Coach.': 'Aumente o limite de saída em Configurações → Treinador IA.',
+}

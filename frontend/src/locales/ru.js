@@ -2249,4 +2249,11 @@ export default {
   'Your sports watch, calling you back.': 'Ваши спортивные часы зовут вас обратно.',
   'Coach wants you back on the bar.': 'Тренер ждёт вас обратно у штанги.',
   'Gentle, for headphones or a quiet room.': 'Тихий, для наушников или спокойного зала.',
+  // --- Coach limits on the phone ---
+  'Daily limit': 'Дневной лимит',
+  'Output limit': 'Лимит ответа',
+  'Requests per day ({0})': 'Запросов в день ({0})',
+  'Tokens per answer ({0})': 'Токенов на ответ ({0})',
+  'These limits apply to every Coach request this phone makes. Raise the output limit if answers get cut off, which can happen with models that think before they answer.': 'Эти лимиты действуют для каждого запроса к Coach с этого телефона. Увеличьте лимит ответа, если ответы обрываются: так бывает с моделями, которые «думают» перед ответом.',
+  'Raise the output limit under Settings → AI Coach.': 'Увеличьте лимит ответа в разделе Настройки → ИИ-тренер.',
 }

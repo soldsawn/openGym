@@ -2248,4 +2248,11 @@ export default {
   'Your sports watch, calling you back.': 'A sportórád visszahív.',
   'Coach wants you back on the bar.': 'Az edző visszavár a rúdhoz.',
   'Gentle, for headphones or a quiet room.': 'Halk, fülhallgatóhoz vagy csendes helyre.',
+  // --- Coach limits on the phone ---
+  'Daily limit': 'Napi limit',
+  'Output limit': 'Kimeneti limit',
+  'Requests per day ({0})': 'Kérések naponta ({0})',
+  'Tokens per answer ({0})': 'Token válaszonként ({0})',
+  'These limits apply to every Coach request this phone makes. Raise the output limit if answers get cut off, which can happen with models that think before they answer.': 'Ezek a korlátok a telefon minden Coach-kérésére érvényesek. Növeld a kimeneti limitet, ha a válaszok félbeszakadnak – ez előfordulhat azoknál a modelleknél, amelyek válasz előtt gondolkodnak.',
+  'Raise the output limit under Settings → AI Coach.': 'Növeld a kimeneti limitet itt: Beállítások → MI-edző.',
 }

@@ -2245,4 +2245,11 @@ export default {
   'Your sports watch, calling you back.': 'Zegarek sportowy wzywa z powrotem.',
   'Coach wants you back on the bar.': 'Trener czeka przy sztandze.',
   'Gentle, for headphones or a quiet room.': 'Cichy, do słuchawek albo spokojnego pomieszczenia.',
+  // --- Coach limits on the phone ---
+  'Daily limit': 'Limit dzienny',
+  'Output limit': 'Limit odpowiedzi',
+  'Requests per day ({0})': 'Zapytań dziennie ({0})',
+  'Tokens per answer ({0})': 'Tokenów na odpowiedź ({0})',
+  'These limits apply to every Coach request this phone makes. Raise the output limit if answers get cut off, which can happen with models that think before they answer.': 'Te limity dotyczą każdego zapytania do Coacha wysyłanego z tego telefonu. Zwiększ limit odpowiedzi, jeśli odpowiedzi są ucinane – może się to zdarzyć w modelach, które „myślą” przed odpowiedzią.',
+  'Raise the output limit under Settings → AI Coach.': 'Zwiększ limit odpowiedzi w Ustawienia → Trener AI.',
 }
