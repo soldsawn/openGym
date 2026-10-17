@@ -436,11 +436,16 @@ function cleanActive(raw, nameOf = libraryName) {
     target: targetOf(en),
     sets: setsOf(en).slice(0, 30).map(cleanSet)
   })).filter(en => en.id);
+  const anchorKey = ident(raw.anchorKey);
+  // By name as well as by key: a model that has to look the key up tends to answer for the
+  // first unfinished exercise instead of the one the question was asked from.
+  const anchor = entries.find(en => en.key === anchorKey);
   return {
     id: ident(raw.id),
     name: word(raw.name, NAME_MAX),
     elapsedMin: count(raw.elapsedMin, 0, 24 * 60),
-    anchorKey: ident(raw.anchorKey),
+    anchorKey,
+    ...(anchor?.name ? { askedAbout: anchor.name } : {}),
     entries,
     conversation: list(raw.coachChat).filter(m => m && (m.role === 'user' || m.role === 'coach') && typeof m.text === 'string')
       .slice(-CONVERSATION_LINES).map(m => ({

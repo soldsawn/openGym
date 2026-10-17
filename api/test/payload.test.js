@@ -428,3 +428,20 @@ test('the app\'s active equipment profile stands in when the Coach was told no e
   S.coach.profile.equipment = ['barbell'];
   assert.deepEqual(payload.build(S, { handle: handleFor('u1'), kind: 'create' }).coachProfile.equipment, ['barbell']);
 });
+
+/* Asked from an exercise further down the list, the question has to name that one: by key alone
+   the model tended to answer for the first unfinished exercise instead. */
+test('a workout question names the exercise it was asked from, not the next one', () => {
+  const sets = [{ w: 20, r: 10 }, { w: 20, r: 10 }];
+  const session = {
+    id: 'a1', name: 'Pull Day A', anchorKey: 'k2',
+    entries: [{ key: 'k1', id: '0001', sets }, { key: 'k2', id: '0007', sets }],
+    coachChat: [{ role: 'user', text: 'I feel great', about: '0001' }]
+  };
+  const p = payload.build(sampleState(), { handle: handleFor('u'), kind: 'workout', note: 'This equipment is busy', session });
+  assert.equal(p.active.anchorKey, 'k2');
+  assert.equal(p.active.askedAbout, p.active.entries[1].name);
+  assert.notEqual(p.active.askedAbout, p.active.entries[0].name);
+  const lost = payload.build(sampleState(), { handle: handleFor('u'), kind: 'workout', note: 'x', session: { ...session, anchorKey: 'gone' } });
+  assert.equal('askedAbout' in lost.active, false, 'a key that matches nothing names nothing');
+});
