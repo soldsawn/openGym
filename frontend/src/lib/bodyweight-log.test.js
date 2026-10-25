@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { logWeighIn, weighInOn, weighInPoint, weighInTime } from './bodyweight-log.js'
+import { logWeighIn, weighInOn } from './bodyweight-log.js'
+import { weighInAt } from './bodyweight.js'
 
 describe('a weigh-in on any day', () => {
   it('adds a past day in date order, not at the end', () => {
@@ -20,10 +21,9 @@ describe('a weigh-in on any day', () => {
   it('sits on a chart at the day it is for, not the moment it was typed', () => {
     const typedTonight = new Date('2026-10-17T02:00:00').getTime()
     const july = { d: '2026-07-12', w: 75.4, t: typedTonight }
-    expect(weighInTime(july)).toBe(new Date('2026-07-12T12:00:00').getTime())
-    expect(weighInPoint(july)).toEqual({ t: new Date('2026-07-12T12:00:00').getTime(), y: 75.4, d: '2026-07-12' })
+    expect(weighInAt(july)).toBe(new Date('2026-07-12T12:00:00').getTime())
     const log = [july, { d: '2026-08-29', w: 80.3, t: typedTonight }, { d: '2026-10-14', w: 81.5, t: new Date('2026-10-14T08:00:00').getTime() }]
-    const xs = log.map(weighInTime)
+    const xs = log.map(weighInAt)
     expect([...xs].sort((a, b) => a - b)).toEqual(xs)          // in date order along the axis
     expect(new Set(xs).size).toBe(3)                           // none piled on another
   })

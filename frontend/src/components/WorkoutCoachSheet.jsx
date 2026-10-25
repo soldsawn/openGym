@@ -15,7 +15,7 @@ import { joinSessionNoProg } from '../lib/session-noprog.js'
 import { appendLog, applyChangeSet, changeTitle } from '../lib/coach.js'
 import { applyWorkoutActions, coachExerciseConfig, ensureWorkoutEntryKeys, markWorkoutActions, needsGroupChoice, workoutCoachSession } from '../lib/workout-coach.js'
 import { routineChangesFor } from '../lib/workout-coach-routine.js'
-import { awaitedJob, JOB_ERRORS, jobErrorText, requestWorkout, resolvePending, settleAwaited, useCoachStatus } from '../lib/coach-api.js'
+import { awaitedJob, isDeclined, JOB_ERRORS, jobErrorText, requestWorkout, resolvePending, settleAwaited, useCoachStatus } from '../lib/coach-api.js'
 import { swapGroupSheet } from '../sheets.jsx'
 import { useSheetKeyboard } from '../lib/use-sheet-keyboard.js'
 import { Button, Check } from './ui.jsx'
@@ -175,7 +175,7 @@ export default function WorkoutCoachSheet({ close, anchorKey }) {
       update(s => { if (s.active) s.active.coachChat = [...(s.active.coachChat || []), { role: 'user', text: value, ...(anchor ? { about: anchor.id } : {}) }].slice(-8) })
       setText('')
       refresh()
-    } catch (e) { toast(JOB_ERRORS[e.data?.code] || e.message || t('Could not ask the Coach')) }
+    } catch (e) { if (!isDeclined(e)) toast(JOB_ERRORS[e.data?.code] || e.message || t('Could not ask the Coach')) }
     setBusy(false)
   }
 
