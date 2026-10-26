@@ -1714,6 +1714,13 @@ export const PT_BR_OVERRIDES = {
   'App icon': 'Ícone do app',
   'Just for this phone. Some home screens take a moment to catch up.': 'Só para este celular. Algumas telas iniciais demoram um pouco para perceber.',
   'Try the Halloween app icon': 'Experimente o ícone de Halloween do app',
+  'Music': 'Música',
+  'Previous track': 'Faixa anterior',
+  'Next track': 'Próxima faixa',
+  'Pause music': 'Pausar música',
+  'Play music': 'Tocar música',
+  'Music controls': 'Controles de música',
+  'Previous, play/pause and next for the music you are playing, under the header.': 'Anterior, tocar/pausar e próxima para a música que está tocando, abaixo do cabeçalho.',
 }
 
 export default { ...pt, ...PT_BR_OVERRIDES }

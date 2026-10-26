@@ -1,7 +1,5 @@
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useStore } from '../store/useStore.js'
-import { effectiveRoutineIds, effectiveRoutines } from '../lib/history.js'
-import { todayISO } from '../lib/format.js'
 import { t } from '../lib/i18n.js'
 import Icon from './Icon.jsx'
 import Elapsed from './Elapsed.jsx'
@@ -20,7 +18,7 @@ function Tab({ active, icon, label, onClick, dot }) {
   )
 }
 
-export default function TabBar({ onStart }) {
+export default function TabBar() {
   const nav = useNavigate()
   const loc = useLocation()
   const S = useStore(s => s.S)
@@ -42,14 +40,9 @@ export default function TabBar({ onStart }) {
   }
 
   const running = runningElsewhere(S.active, cur)
-  const startWorkout = () => {
-    if (!S.active) {
-      // A weekday can hold several routines; start the combined session if any of them has
-      // exercises, otherwise fall through to the picker.
-      if (effectiveRoutines(S, todayISO()).some(r => r.ex.length)) { onStart(effectiveRoutineIds(S, todayISO())); return }
-    }
-    nav('/workout')
-  }
+  // Always the Start screen, even on a planned day (fork): today's plan leads it, the other
+  // routines and a freestyle session sit under it, so nothing starts without being picked.
+  const startWorkout = () => nav('/workout')
 
   return (
     <nav id="tabbar">

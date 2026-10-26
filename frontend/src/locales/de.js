@@ -2652,4 +2652,11 @@ export default {
   'Just for this phone. Some home screens take a moment to catch up.': 'Nur für dieses Handy. Manche Startbildschirme brauchen einen Moment, bis sie mitkommen.',
   'The icon could not be changed.': 'Das Icon ließ sich nicht ändern.',
   'Try the Halloween app icon': 'Probier das Halloween-App-Icon',
+  'Music': 'Musik',
+  'Previous track': 'Vorheriger Titel',
+  'Next track': 'Nächster Titel',
+  'Pause music': 'Musik pausieren',
+  'Play music': 'Musik abspielen',
+  'Music controls': 'Musiksteuerung',
+  'Previous, play/pause and next for the music you are playing, under the header.': 'Zurück, Wiedergabe/Pause und Weiter für die Musik, die gerade läuft, unter der Kopfzeile.',
 }

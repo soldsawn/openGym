@@ -2711,4 +2711,11 @@ export default {
   'Just for this phone. Some home screens take a moment to catch up.': 'শুধু এই ফোনের জন্য। কিছু হোম স্ক্রিন বুঝতে একটু সময় নেয়।',
   'The icon could not be changed.': 'আইকন বদলানো গেল না।',
   'Try the Halloween app icon': 'হ্যালোইন অ্যাপ আইকন চেষ্টা করুন',
+  'Music': 'সংগীত',
+  'Previous track': 'আগের ট্র্যাক',
+  'Next track': 'পরের ট্র্যাক',
+  'Pause music': 'সংগীত থামান',
+  'Play music': 'সংগীত চালান',
+  'Music controls': 'সংগীত নিয়ন্ত্রণ',
+  'Previous, play/pause and next for the music you are playing, under the header.': 'চলমান সংগীতের জন্য আগের, চালান/থামান ও পরের বোতাম, হেডারের নিচে।',
 }

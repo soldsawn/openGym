@@ -2625,4 +2625,11 @@ export default {
   'Just for this phone. Some home screens take a moment to catch up.': '只限這支手機。有些主畫面要過一下才會跟上。',
   'The icon could not be changed.': '無法更換圖示。',
   'Try the Halloween app icon': '試試萬聖節 App 圖示',
+  'Music': '音樂',
+  'Previous track': '上一首',
+  'Next track': '下一首',
+  'Pause music': '暫停音樂',
+  'Play music': '播放音樂',
+  'Music controls': '音樂控制',
+  'Previous, play/pause and next for the music you are playing, under the header.': '在標題下方，為正在播放的音樂提供上一首、播放/暫停和下一首。',
 }

@@ -80,4 +80,13 @@ describe('root tab history', () => {
     expect(router.state.location.pathname).toBe('/home')
     expect(onStart).not.toHaveBeenCalled()
   })
+
+  // Fork: Start always asks, so a freestyle session is one tap away on a planned day too.
+  it('opens the chooser on a planned day instead of starting the plan', async () => {
+    const r = { id: 'r1', name: 'Push', emoji: null, ex: [{ id: '0025' }] }
+    useStore.setState({ S: { ...useStore.getState().S, routines: [r], dayPlan: {}, week: { 0: ['r1'], 1: ['r1'], 2: ['r1'], 3: ['r1'], 4: ['r1'], 5: ['r1'], 6: ['r1'] } } })
+    await tap('Start')
+    expect(router.state.location.pathname).toBe('/workout')
+    expect(useStore.getState().S.active).toBeFalsy()
+  })
 })

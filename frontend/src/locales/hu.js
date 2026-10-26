@@ -2635,4 +2635,11 @@ export default {
   'Just for this phone. Some home screens take a moment to catch up.': 'Csak ezen a telefonon. Néhány kezdőképernyőnek kell egy pillanat, mire észreveszi.',
   'The icon could not be changed.': 'Nem sikerült megváltoztatni az ikont.',
   'Try the Halloween app icon': 'Próbáld ki a halloweeni alkalmazásikont',
+  'Music': 'Zene',
+  'Previous track': 'Előző szám',
+  'Next track': 'Következő szám',
+  'Pause music': 'Zene szüneteltetése',
+  'Play music': 'Zene lejátszása',
+  'Music controls': 'Zenevezérlők',
+  'Previous, play/pause and next for the music you are playing, under the header.': 'Előző, lejátszás/szünet és következő a szóló zenéhez, a fejléc alatt.',
 }

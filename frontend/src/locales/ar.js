@@ -2687,4 +2687,11 @@ export default {
   'Just for this phone. Some home screens take a moment to catch up.': 'لهذا الهاتف فقط. بعض الشاشات الرئيسية تحتاج لحظة لتلحق.',
   'The icon could not be changed.': 'تعذّر تغيير الأيقونة.',
   'Try the Halloween app icon': 'جرّب أيقونة التطبيق الخاصة بالهالوين',
+  'Music': 'الموسيقى',
+  'Previous track': 'المقطع السابق',
+  'Next track': 'المقطع التالي',
+  'Pause music': 'إيقاف الموسيقى مؤقتًا',
+  'Play music': 'تشغيل الموسيقى',
+  'Music controls': 'أزرار الموسيقى',
+  'Previous, play/pause and next for the music you are playing, under the header.': 'السابق والتشغيل/الإيقاف المؤقت والتالي للموسيقى التي تعمل، أسفل الترويسة.',
 }

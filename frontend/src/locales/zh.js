@@ -2632,4 +2632,11 @@ export default {
   'Just for this phone. Some home screens take a moment to catch up.': '仅限这部手机。有些主屏幕要过一会儿才会跟上。',
   'The icon could not be changed.': '无法更换图标。',
   'Try the Halloween app icon': '试试万圣节应用图标',
+  'Music': '音乐',
+  'Previous track': '上一首',
+  'Next track': '下一首',
+  'Pause music': '暂停音乐',
+  'Play music': '播放音乐',
+  'Music controls': '音乐控制',
+  'Previous, play/pause and next for the music you are playing, under the header.': '在标题下方，为正在播放的音乐提供上一首、播放/暂停和下一首。',
 }

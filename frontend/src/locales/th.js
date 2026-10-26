@@ -2643,4 +2643,11 @@ export default {
   'Just for this phone. Some home screens take a moment to catch up.': 'เฉพาะโทรศัพท์เครื่องนี้ หน้าจอโฮมบางแบบต้องใช้เวลาสักครู่ถึงจะเปลี่ยน',
   'The icon could not be changed.': 'เปลี่ยนไอคอนไม่ได้',
   'Try the Halloween app icon': 'ลองไอคอนแอปฮาโลวีน',
+  'Music': 'เพลง',
+  'Previous track': 'เพลงก่อนหน้า',
+  'Next track': 'เพลงถัดไป',
+  'Pause music': 'หยุดเพลงชั่วคราว',
+  'Play music': 'เล่นเพลง',
+  'Music controls': 'ปุ่มควบคุมเพลง',
+  'Previous, play/pause and next for the music you are playing, under the header.': 'ปุ่มก่อนหน้า เล่น/หยุดชั่วคราว และถัดไป สำหรับเพลงที่กำลังเล่น ใต้ส่วนหัว',
 }

@@ -24,6 +24,7 @@ import { t, tn, LANGS, INSTR_LANGS, EXERCISE_NAME_LANGS, baseLang, dateLocale } 
 import { effectiveLang } from '../lib/default-lang.js'
 import { DEMO, REPO } from '../lib/demo.js'
 import { MOBILE, isAndroid, shareExport, shareExportBlob, syncReminder } from '../lib/mobile.js'
+import { MEDIA_KEYS } from '../lib/media-keys.js'
 import { NUDGE_COPY, NUDGE_TONES, toneOf } from '../lib/nudge.js'
 import { referencedFiles } from '../lib/media-refs.js'
 import { mediaStore } from '../lib/media-store.js'
@@ -648,6 +649,10 @@ export default function Settings({ page = null, find = null, via = null, entryKe
           <Row icon="figureStrength" iconTint="var(--orange)" title={t('Muscle map at the top')} subtitle={t('A tiny body that lights up as you tick sets. Tap it for the details.')}>
             <Switch aria-label={t('Muscle map at the top')} checked={wc.muscleMap} onChange={v => setWc('muscleMap', v)} />
           </Row>
+          {/* The phone's music (fork, lib/media-keys.js): only where the app can send the keys. */}
+          {MEDIA_KEYS && <Row icon="music" iconTint="var(--pink)" title={t('Music controls')} subtitle={t('Previous, play/pause and next for the music you are playing, under the header.')}>
+            <Switch aria-label={t('Music controls')} checked={wc.music} onChange={v => setWc('music', v)} />
+          </Row>}
           <Row icon="link" iconTint="var(--blue)" title={t('Superset buttons in the exercise header')}>
             <Switch checked={wc.pairButtons} onChange={v => setWc('pairButtons', v)} />
           </Row>

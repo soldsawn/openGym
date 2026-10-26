@@ -2629,4 +2629,11 @@ export default {
   'Just for this phone. Some home screens take a moment to catch up.': 'Лише для цього телефона. Деяким домашнім екранам треба хвилинка, щоб помітити.',
   'The icon could not be changed.': 'Не вдалося змінити значок.',
   'Try the Halloween app icon': 'Спробуй гелловінський значок застосунку',
+  'Music': 'Музика',
+  'Previous track': 'Попередній трек',
+  'Next track': 'Наступний трек',
+  'Pause music': 'Призупинити музику',
+  'Play music': 'Увімкнути музику',
+  'Music controls': 'Керування музикою',
+  'Previous, play/pause and next for the music you are playing, under the header.': 'Назад, відтворення/пауза і вперед для музики, що грає, під заголовком.',
 }

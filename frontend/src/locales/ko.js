@@ -2632,4 +2632,11 @@ export default {
   'Just for this phone. Some home screens take a moment to catch up.': '이 휴대폰에만 적용돼요. 홈 화면에 따라 바뀌는 데 잠깐 걸릴 수 있어요.',
   'The icon could not be changed.': '아이콘을 바꾸지 못했어요.',
   'Try the Halloween app icon': '핼러윈 앱 아이콘 써 보기',
+  'Music': '음악',
+  'Previous track': '이전 곡',
+  'Next track': '다음 곡',
+  'Pause music': '음악 일시정지',
+  'Play music': '음악 재생',
+  'Music controls': '음악 컨트롤',
+  'Previous, play/pause and next for the music you are playing, under the header.': '재생 중인 음악의 이전 곡, 재생/일시정지, 다음 곡 버튼을 헤더 아래에 표시해요.',
 }

@@ -2679,4 +2679,11 @@ export default {
   'Workout in progress': 'Pass pågår',
   'Running-workout bar': 'Fält för pågående pass',
   'Shows a workout left running above the tab bar, with Resume and discard.': 'Visar ett pass som fortfarande pågår ovanför flikfältet, med Fortsätt och Släng.',
+  'Music': 'Musik',
+  'Previous track': 'Föregående spår',
+  'Next track': 'Nästa spår',
+  'Pause music': 'Pausa musiken',
+  'Play music': 'Spela musik',
+  'Music controls': 'Musikkontroller',
+  'Previous, play/pause and next for the music you are playing, under the header.': 'Föregående, spela/pausa och nästa för musiken som spelas, under rubriken.',
 }

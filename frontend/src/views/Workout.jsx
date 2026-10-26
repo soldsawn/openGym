@@ -42,6 +42,10 @@ import { glyphOf } from '../lib/glyphs.js'
 import { markAllSetsDone, sessionHistory } from '../lib/backfill.js'
 import { bindWatchActions } from '../lib/watch-sync.js'
 import { bestSetFor } from '../lib/exercise-history.js'
+import { best1RM, formulaOf } from '../lib/onerm.js'
+import { prSetRows } from '../lib/set-prs.js'
+import { MEDIA_KEYS } from '../lib/media-keys.js'
+import MusicControls from '../components/MusicControls.jsx'
 import { bindLiveActions } from '../lib/live-activity.js'
 import { isWarmupRow, isFailureSet, toggleFailure, isDropSet, isRestPauseSet, dropsOf, clustersOf, addDrop, addCluster, removeDropAt, removeClusterAt, setDropAt, setClusterAt, nextDropWeight, nextBurstReps, isSideSet, makeSideSet, setSideField, toggleSide, addSideDrop, removeSideDropAt, setSideDropAt, addSideCluster, removeSideClusterAt, setSideClusterAt, WEIGHT_ORIGIN_MANUAL } from '../lib/workout-model.js'
 import { canMoveActiveWorkoutUnit, moveActiveWorkoutUnit, canMoveActiveWorkoutEntry, moveActiveWorkoutEntry } from '../lib/active-workout-order.js'
@@ -113,6 +117,8 @@ const RTL_LETTER = /[֐-ࣿיִ-﷿ﹰ-﻿]/
 // The pause between the left and the right side of one timed per-side set (owner's call): long
 // enough to turn over, far shorter than the rest the set earns once both sides are held.
 const SWITCH_SIDES_SEC = 10
+// How long a new PR badge sparkles (index.css .pr-sparkle).
+const SPARKLE_MS = 900
 
 function ExerciseBlock({ entryIdx, compact, dense, editing, onToggle, onToggleSide, onField, onAddSet, onRemoveSet, onAddWarmup, onRemoveSetAt, onCopySetAt, onStartTimed, onPairPrev, onPairNext, onSetRowRef, onProgressionSettings, onRest, onNoProg, routineUpdate, onSwap, onAskCoach, onSwapBackup, onMoveUp, onMoveDown, canMoveUp, canMoveDown, onRemoveExercise, busy }) {
   const S = useStore(s => s.S)
@@ -230,6 +236,29 @@ function ExerciseBlock({ entryIdx, compact, dense, editing, onToggle, onToggleSi
   const bestKept = (H.exWeights[entry.id] || {}).w || 0
   const best = cardio ? 0
     : bestHist > 0 && bestKept > 0 ? betterWeight(entry.id, bestHist, bestKept) : Math.max(bestHist, bestKept)
+  // A ticked set that beats the heaviest load or the best estimated 1RM ever wears "PR" in place
+  // of its number (lib/set-prs.js), the two records the finish summary reports. A past workout
+  // being logged or edited shows none: the finish summary does not report them live either.
+  const prRows = mode === 'reps' && !editing && !S.active.backfill
+    ? prSetRows(entry, { w: bestHist, est: best1RM(H, entry.id, formulaOf(S), meaning)?.est }, formulaOf(S))
+    : null
+  // A badge that has just appeared sparkles once. Only a change while the block is on screen
+  // counts: opening an exercise that already has a PR shows it still.
+  const prKey = prRows ? [...prRows].join(',') : ''
+  const prPrev = useRef(null)
+  const [sparkle, setSparkle] = useState(() => new Set())
+  const sparkleTm = useRef(0)
+  useEffect(() => () => clearTimeout(sparkleTm.current), [])
+  useEffect(() => {
+    const before = prPrev.current
+    prPrev.current = prRows
+    const fresh = before ? [...(prRows || [])].filter(i => !before.has(i)) : []
+    if (!fresh.length) return
+    setSparkle(new Set(fresh))
+    clearTimeout(sparkleTm.current)
+    sparkleTm.current = setTimeout(() => setSparkle(new Set()), SPARKLE_MS)
+  }, [prKey])
+  const prMark = i => (prRows?.has(i) ? ' is-pr' + (sparkle.has(i) ? ' pr-sparkle' : '') : '')
   // What the progression policy decided for this session, and why (issue #17). Computed when
   // the session was built so the reason matches the numbers already in the rows.
   const plan = entry.plan
@@ -649,9 +678,10 @@ function ExerciseBlock({ entryIdx, compact, dense, editing, onToggle, onToggleSi
   // from. The button's own label speaks for it, so a screen reader hears it with the set number.
   const failMark = s => isFailureSet(s) ? <span className="failmark" aria-hidden="true">{t('F')}</span> : null
   const failSay = (s, label) => isFailureSet(s) ? label + ', ' + t('Taken to failure') : label
+  const prSay = (i, label) => prRows?.has(i) ? label + ', PR' : label
   const plainRow = (s, i) => (
     <div ref={el => onSetRowRef?.(i, el)} className={'setrow' + (s.done ? ' done' : '') + (col3 ? ' eff3' : '') + (timed ? ' timed' : '')}>
-      <button type="button" className="n" aria-label={failSay(s, sideTagOf(s) ? t('Set {0} ({1})', setNumOf(s, i), sideTagOf(s)) : t('Set {0}', setNumOf(s, i)))} aria-describedby={optsId} title={t('More')} onClick={() => openSetMenu(s, i)}>{setNumOf(s, i)}{failMark(s)}</button>
+      <button type="button" className={'n' + prMark(i)} aria-label={prSay(i, failSay(s, sideTagOf(s) ? t('Set {0} ({1})', setNumOf(s, i), sideTagOf(s)) : t('Set {0}', setNumOf(s, i))))} aria-describedby={optsId} title={t('More')} onClick={() => openSetMenu(s, i)}>{prRows?.has(i) ? 'PR' : setNumOf(s, i)}{failMark(s)}</button>
       {/* Both words sit in the pill's one grid cell (::before/::after, hidden), so Left and
           Right are as wide as the longer of the two in every language and the inputs
           after them line up (#322). */}
@@ -780,7 +810,7 @@ function ExerciseBlock({ entryIdx, compact, dense, editing, onToggle, onToggleSi
             // ticked on its own (issue #60). Warm-ups split the same way as the work sets they
             // ramp toward, so a warm-up side set shows L/R too (#388).
             <div ref={el => onSetRowRef?.(i, el)} className={'setrow-side' + (s.done ? ' done' : '')}>
-              <button type="button" className="n" aria-label={failSay(s, t('Set {0}', phaseNum))} aria-describedby={optsId} title={t('More')} onClick={() => openSetMenu(s, i)}>{phaseNum}{failMark(s)}</button>
+              <button type="button" className={'n' + prMark(i)} aria-label={prSay(i, failSay(s, t('Set {0}', phaseNum)))} aria-describedby={optsId} title={t('More')} onClick={() => openSetMenu(s, i)}>{prRows?.has(i) ? 'PR' : phaseNum}{failMark(s)}</button>
               <div className="side-rows">
                 {sideRow(s, i, 'L', col1, col2, col3)}
                 {sideExtras(s, i, 'L')}
@@ -1536,7 +1566,7 @@ function ActiveWorkout() {
     // Ticked here rather than row by row: without this, unticking and reticking one of them
     // would count as new progress and replay the flow a first tick runs.
     if (fresh) progressHighWater.current = fresh.entries.map(e => e.sets.filter(s => s.done).length)
-    workoutCompleteSheet()
+    workoutCompleteSheet({ onAddExercise: addExercise })
   }
   // Adds an exercise after the current unit: the button under the session and the ⋯ menu's Add.
   const addExercise = () => exercisePicker((ex, quick) => {
@@ -1832,7 +1862,7 @@ function ActiveWorkout() {
       }
     }, true)
     if (editing) return
-    if (workoutDone) workoutCompleteSheet()
+    if (workoutDone) workoutCompleteSheet({ onAddExercise: addExercise })
     else if (exJustDone && cardioEntry) useUI.getState().toast(t('Cardio logged'))
     else if (exJustDone && m === 'time') useUI.getState().toast(t('Hold logged'))
 
@@ -2195,6 +2225,7 @@ function ActiveWorkout() {
       ? <div className="wprog-row"><div className="wprog"><i style={{ width: (total ? done / total * 100 : 0) + '%' }} /></div>
         <span className="wvol" data-session-volume>{fmtVol(vol, S.unit)}</span></div>
       : <div className="wprog"><i style={{ width: (total ? done / total * 100 : 0) + '%' }} /></div>}
+    {wc.music && MEDIA_KEYS && !editing && !A.backfill && <MusicControls />}
     {/* In the list the chips ride in the pinned header, so any exercise is one tap away from
         anywhere in a long stack. */}
     {listMode && chipRow}
@@ -2349,7 +2380,10 @@ function ActiveWorkout() {
     {(() => {
       const exDone = A.entries.filter(e => e.sets.length && e.sets.every(s => s.done)).length
       const allDone = A.entries.length > 0 && exDone === A.entries.length
-      return <button className={allDone ? 'btn primary' : 'btn ghost dim'} onClick={finishWorkout}>
+      // The header's Finish sheet here too (fork): with every set ticked, finishWorkout saved at
+      // once, and this button sits right under Add exercise, where a freestyle session keeps going.
+      return <button className={allDone ? 'btn primary' : 'btn ghost dim'}
+        onClick={() => (editing ? finishWorkout() : finishWorkoutSheet({ onDiscard: discardWorkout }))}>
         {editing ? t('Save changes') : allDone ? t('Finish workout') : t('Finish workout early · {0} exercises', exDone + '/' + A.entries.length)}
       </button>
     })()}

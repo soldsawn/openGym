@@ -3527,7 +3527,8 @@ export const supersetSheet = (meta, onSave) => ui().openSheet(close => <Superset
    by tapping "+ Drop"/"+ Burst", which appends with the same suggested-next-value math. */
 
 // Shown when the last exercise's last set is checked — finish, or keep going.
-function WorkoutComplete({ close }) {
+// `onAddExercise` is the workout screen's own Add exercise, for one more without scrolling to it.
+function WorkoutComplete({ close, onAddExercise }) {
   return <div style={{ textAlign: 'center', padding: '8px 0' }}>
     <div style={{ fontSize: 44, display: 'flex', justifyContent: 'center', color: 'var(--acc)' }}><Icon name="checkCircle" /></div>
     <h3 style={{ margin: '8px 0' }}>{t("That's the whole workout!")}</h3>
@@ -3535,9 +3536,13 @@ function WorkoutComplete({ close }) {
     <Button variant="primary" icon="flag" onClick={() => { close(); finishWorkout() }}>{t('Finish workout')}</Button>
     <div style={{ height: 8 }} />
     <Button onClick={() => { close(); useUI.getState().toast(t('Keep going: tap “+ Add exercise” below')) }}>{t('Continue workout')}</Button>
+    {onAddExercise && <>
+      <div style={{ height: 8 }} />
+      <Button variant="ghost" icon="plus" onClick={() => { close(); onAddExercise() }}>{t('Add exercise')}</Button>
+    </>}
   </div>
 }
-export const workoutCompleteSheet = () => ui().openSheet(close => <WorkoutComplete close={close} />, { kind: 'center' })
+export const workoutCompleteSheet = ({ onAddExercise } = {}) => ui().openSheet(close => <WorkoutComplete close={close} onAddExercise={onAddExercise} />, { kind: 'center' })
 
 export function saveWorkoutEdits(onExit = () => nav('/history')) {
   // A save decision left open after the editor already closed (a second prompt from a route

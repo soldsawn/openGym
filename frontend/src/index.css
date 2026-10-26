@@ -948,6 +948,11 @@ body.chips-dragging *{cursor:inherit}
 .wprog-row{display:flex;align-items:center;gap:8px;height:12px;margin-bottom:8px}
 .wprog-row .wprog,.whdr.stick .wprog-row .wprog{flex:1;min-width:0;margin-bottom:0}
 .whdr.stick .wprog-row{margin-bottom:2px}
+/* The phone's music under the progress bar (fork, components/MusicControls.jsx): three small
+   round buttons, centred, so a song is skipped without leaving the workout. */
+.wmusic{display:flex;justify-content:center;gap:28px;margin:-4px 0 10px}
+.wmusic .iconbtn{width:34px;height:34px;font-size:16px;background:var(--surface-2)}
+.whdr.stick .wmusic{margin:2px 0 4px}
 .wvol{flex:none;font-size:12px;line-height:12px;color:var(--label-2);font-variant-numeric:tabular-nums;white-space:nowrap}
 .exmedia{position:relative;border-radius:var(--r-lg);overflow:hidden;background:#fff;margin-bottom:12px}
 .exmedia img{width:100%;height:320px;object-fit:contain;display:block}
@@ -1211,6 +1216,19 @@ body.chips-dragging *{cursor:inherit}
 .effpick .effpick-free .stp .num{font-size:17px;font-weight:600}
 .effpick .effpick-free .stp .num::placeholder{color:var(--label-3);font-weight:500}
 .setrow.done .n{background:var(--acc);color:var(--on-acc)}
+/* A ticked set that set a record: "PR" in place of its number, in the theme's accent, square
+   where a ticked number is round. A new one pops in with a ring of sparks (Workout.jsx SPARKLE_MS). */
+.setrow .n.is-pr,.setrow-side>.n.is-pr{border-radius:6px;background:var(--acc);color:var(--on-acc);font-size:10px;font-weight:700;letter-spacing:.02em}
+.setrow .n.pr-sparkle,.setrow-side>.n.pr-sparkle{animation:pr-pop .4s var(--ease) both}
+.setrow .n.pr-sparkle::after,.setrow-side>.n.pr-sparkle::after{
+  content:'';position:absolute;left:50%;top:50%;width:3px;height:3px;margin:-1.5px 0 0 -1.5px;border-radius:50%;pointer-events:none;
+  box-shadow:0 -15px 0 var(--acc),11px -11px 0 var(--label),15px 0 0 var(--acc),11px 11px 0 var(--yellow),
+    0 15px 0 var(--label),-11px 11px 0 var(--acc),-15px 0 0 var(--yellow),-11px -11px 0 var(--label),
+    6px -19px 0 -.5px var(--yellow),19px 6px 0 -.5px var(--label),-6px 19px 0 -.5px var(--acc),-19px -6px 0 -.5px var(--acc);
+  animation:pr-sparks .9s ease-out both;
+}
+@keyframes pr-pop{0%{transform:scale(.5)}60%{transform:scale(1.18)}100%{transform:scale(1)}}
+@keyframes pr-sparks{0%{transform:scale(.3);opacity:0}15%{opacity:1}70%{opacity:1}100%{transform:scale(1.35);opacity:0}}
 .setrow.done{opacity:.45}
 
 /* Swipe on sets (v1.3.11, components/SwipeRow.jsx). The row slides over two panes: Copy at the

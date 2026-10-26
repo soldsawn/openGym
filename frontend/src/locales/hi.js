@@ -2632,4 +2632,11 @@ export default {
   'Just for this phone. Some home screens take a moment to catch up.': 'सिर्फ़ इस फ़ोन के लिए। कुछ होम स्क्रीन को समझने में थोड़ा समय लगता है।',
   'The icon could not be changed.': 'आइकन बदला नहीं जा सका।',
   'Try the Halloween app icon': 'हैलोवीन ऐप आइकन आज़माएँ',
+  'Music': 'संगीत',
+  'Previous track': 'पिछला ट्रैक',
+  'Next track': 'अगला ट्रैक',
+  'Pause music': 'संगीत रोकें',
+  'Play music': 'संगीत चलाएँ',
+  'Music controls': 'संगीत नियंत्रण',
+  'Previous, play/pause and next for the music you are playing, under the header.': 'चल रहे संगीत के लिए पिछला, चलाएँ/रोकें और अगला, हेडर के नीचे।',
 }

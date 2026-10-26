@@ -2632,4 +2632,11 @@ export default {
   'Just for this phone. Some home screens take a moment to catch up.': 'Yalnızca bu telefon için. Bazı ana ekranların fark etmesi biraz sürer.',
   'The icon could not be changed.': 'Simge değiştirilemedi.',
   'Try the Halloween app icon': 'Cadılar Bayramı uygulama simgesini dene',
+  'Music': 'Müzik',
+  'Previous track': 'Önceki parça',
+  'Next track': 'Sonraki parça',
+  'Pause music': 'Müziği duraklat',
+  'Play music': 'Müziği çal',
+  'Music controls': 'Müzik kontrolleri',
+  'Previous, play/pause and next for the music you are playing, under the header.': 'Çalan müzik için önceki, oynat/duraklat ve sonraki, başlığın altında.',
 }
