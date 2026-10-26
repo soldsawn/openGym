@@ -9,6 +9,7 @@ import { useUI } from '../store/useUI.js'
 import { t } from '../lib/i18n.js'
 import { confirmSheet } from '../sheets.jsx'
 import { rememberDiscardedWorkout } from './WorkoutCoachSheet.jsx'
+import { markDiscarded } from '../lib/watch-sync.js'
 import Elapsed from './Elapsed.jsx'
 import Icon from './Icon.jsx'
 import { Button } from './ui.jsx'
@@ -20,12 +21,14 @@ import { Button } from './ui.jsx'
 export const runningElsewhere = (active, cur) => !!active && cur !== 'workout' && !active.editingWorkoutId && !active.backfill && active.start > 0
 
 /**
- * Ends the session without saving it, from the workout screen's menu or this bar's ✕. A running
- * rest or timed set goes with it, and a Coach suggestion still waiting for that workout is known
- * to be over (WorkoutCoachSheet).
+ * Ends the session without saving it, from the workout's Finish sheet, the watch's Discard or this
+ * bar's ✕. A running rest or timed set goes with it, the watch is told first so the session is not
+ * saved to Apple Health (#776), and a Coach suggestion still waiting for that workout is known to
+ * be over (WorkoutCoachSheet).
  */
 export function discardActiveWorkout() {
   const id = useStore.getState().S.active?.id
+  markDiscarded(id)
   if (id) rememberDiscardedWorkout(id)
   useStore.getState().update(s => { s.active = null })
   useUI.getState().stopRest()

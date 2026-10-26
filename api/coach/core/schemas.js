@@ -133,4 +133,11 @@ export const WORKOUT_SCHEMA = {
   required: ['coach_contract', 'reply', 'actions']
 };
 
-export const SCHEMAS = { review: REVIEW_SCHEMA, create: CREATE_SCHEMA, refine: CREATE_SCHEMA, debrief: DEBRIEF_SCHEMA, workout: WORKOUT_SCHEMA };
+// A question in the chat: one plain-text answer, nothing to apply.
+export const ASK_SCHEMA = {
+  type: 'object',
+  properties: { coach_contract: { type: 'integer' }, answer: STR },
+  required: ['coach_contract', 'answer']
+};
+
+export const SCHEMAS = { review: REVIEW_SCHEMA, create: CREATE_SCHEMA, refine: CREATE_SCHEMA, debrief: DEBRIEF_SCHEMA, workout: WORKOUT_SCHEMA, ask: ASK_SCHEMA };

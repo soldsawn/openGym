@@ -13,7 +13,9 @@ export const weighInOn = (list, iso) => (Array.isArray(list) ? list.find(b => b 
  */
 export function logWeighIn(list, iso, w, t = Date.now()) {
   const ex = weighInOn(list, iso)
-  if (ex) { ex.w = w; ex.t = t }
+  // A number typed over an imported one (Apple Health, Health Connect) is the person's own now:
+  // `src` goes, so it is synced out like any other weigh-in (lib/bodyweight.js does the same).
+  if (ex) { ex.w = w; ex.t = t; delete ex.src }
   else list.push({ d: iso, w, t })
   list.sort((a, b) => (a.d < b.d ? -1 : a.d > b.d ? 1 : 0))
   return ex ? 'replaced' : 'added'

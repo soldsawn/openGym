@@ -16,6 +16,12 @@ describe('a weigh-in on any day', () => {
     expect(list).toEqual([{ d: '2026-09-16', w: 79.6, t: 5 }])
   })
 
+  it('a weigh-in typed over an imported one is no longer marked as imported', () => {
+    const list = [{ d: '2026-09-16', w: 80, t: 1, src: 'health' }]
+    logWeighIn(list, '2026-09-16', 79.6, 5)
+    expect(list).toEqual([{ d: '2026-09-16', w: 79.6, t: 5 }])
+  })
+
   // The flat curve on Home: July's weigh-ins typed in October were plotted at their `t`, all on
   // the same October night, so the line ran from one pile to the next.
   it('sits on a chart at the day it is for, not the moment it was typed', () => {

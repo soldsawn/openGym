@@ -9,8 +9,8 @@ import { nextPrescription, applyPrescription, defaultIncrement, weightIncrement,
 import { dropGrid } from './plates.js'
 import { backoffStepOf, applyBackoff } from './backoff.js'
 import { dbLoadFor, historyAs, ownedWeightsFor, withMeaning } from './dumbbells.js'
-import { sessionHistory } from './backfill.js'
 import { isAssisted } from './exercises.js'
+import { sessionHistory } from './backfill.js'
 
 /**
  * Where a planned session's reps come from (Settings → During a workout). 'plan', the default:
@@ -18,6 +18,11 @@ import { isAssisted } from './exercises.js'
  * and a policy that moves reps (double progression, bodyweight, a timed hold) still moving them
  * from there. 'last': the reps you logged last time, the way every planned session opened before
  * this setting existed. A profile saved before it, or one that never chose, reads as 'plan'.
+ *
+ * An exercise whose progression is off has no prescription, so its rows open at the routine's own
+ * weight and reps. 'last' sends those to last time's weight and reps too (the weight as well as
+ * the reps, since no policy is there to decide it). A deload or rehab routine (`noProg`) keeps the
+ * routine's numbers.
  */
 export const startsFromLast = st => st?.startFrom === 'last'
 
@@ -42,12 +47,13 @@ export function buildPlannedEntry(stored, cfg, routine, { noProg = false } = {})
   // default for its optional load.
   const step = modeOf(cfg) === 'reps' ? weightIncrement(cfg, st.unit) : defaultIncrement(cfg.id, st.unit)
   const planReps = !startsFromLast(st)
+  const fromLast = !noProg && plan.kind === 'off' && startsFromLast(st)
   // Warm-ups ramp over the dumbbells you own when the profile lists them (issue #376): a rung
   // lands on the heaviest bell under it, never on a weight in between that no rack holds.
   const ramp = (modeOf(cfg) === 'reps' && ownedWeightsFor(st, cfg)) || step
   // Back-off sets step down from the top set by the exercise's own step (lib/backoff.js).
   const backoffStep = modeOf(cfg) === 'reps' && backoffStepOf(cfg, st.unit) ? step : 0
-  const built = applyPrescription(buildSets(st, cfg, { step: ramp, rid: routine?.id, useTarget: plan.kind === 'off', planReps }), plan, ramp, barFloor(st, cfg.id), isAssisted(cfg))
+  const built = applyPrescription(buildSets(st, cfg, { step: ramp, rid: routine?.id, useTarget: plan.kind === 'off' && !fromLast, planReps }), plan, ramp, barFloor(st, cfg.id), isAssisted(cfg))
   const rows = backoffStep ? applyBackoff(built, backoffStep) : built
   const sets = applyIntensifierPlan(rows, cfg, dropGrid(st, cfg))
   const target = { ...cfg }
@@ -69,7 +75,8 @@ export function buildPlannedEntry(stored, cfg, routine, { noProg = false } = {})
   // Rows that opened at last session's reps rather than the plan's ("Your last session", and no
   // policy that decided reps), so the workout card can say where the number came from. Written
   // only when true, and never saved with the finished workout.
-  const carried = !planReps && plan.kind !== 'off' && plan.reps == null && modeOf(cfg) === 'reps'
+  // An exercise with progression off that opened at last time's numbers (fromLast) says so too.
+  const carried = !planReps && (plan.kind !== 'off' || fromLast) && plan.reps == null && modeOf(cfg) === 'reps'
     && rows.some(s => !isWarmupRow(s) && s.r !== cfg.reps)
   // `planned` is what the routine asked for, kept apart from the target the prescription moved,
   // so the next session can tell an edited plan from a progressed one (nextPrescription).
