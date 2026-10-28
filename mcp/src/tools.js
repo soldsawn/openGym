@@ -457,7 +457,7 @@ export const estimate1rm = {
 /** muscle_balance — training distribution per muscle over a period (week/month/all). */
 export const muscleBalance = {
   name: 'muscle_balance',
-  description: 'Show which muscles the user has trained in a period, ranked by "effective sets" (volume in kg is intentionally not used — 100 kg leg press vs 12 kg lateral raise say nothing about which muscle worked harder). Reports worked muscles with a 0-6 relative level (1 = some work, 6 = most worked) and the muscles trained zero times in that period — useful for "what am I neglecting?" questions.',
+  description: 'Show which muscles the user has trained in a period, ranked by "effective sets" (volume in kg is intentionally not used — 100 kg leg press vs 12 kg lateral raise say nothing about which muscle worked harder). Reports worked muscles with a 0-4 relative level (1 = some work, 4 = most worked) and the muscles trained zero times in that period — useful for "what am I neglecting?" questions.',
   schema: {
     period: z.enum(['week', 'month', 'all']).describe('window: last 7 days, last 30 days, or all-time')
   },

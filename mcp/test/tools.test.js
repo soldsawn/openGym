@@ -831,7 +831,7 @@ describe('muscle_balance', () => {
     expect(r.muscle_order_head_to_toe.at(-1)).toBe('tibialis')
     r.worked.forEach(w => {
       expect(w.level).toBeGreaterThanOrEqual(1)
-      expect(w.level).toBeLessThanOrEqual(6)   // the fork's seven shades, 0 to 6 (lib/muscles.js levelsOf)
+      expect(w.level).toBeLessThanOrEqual(4)
       expect(typeof w.name).toBe('string')
       expect(typeof w.effective_sets).toBe('number')
     })

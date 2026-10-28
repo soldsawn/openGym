@@ -17,8 +17,7 @@ describe('MiniBodyMap', () => {
     const wrap = host.querySelector('.bm-mini-wrap')
     expect(wrap).not.toBeNull()
     expect(wrap.getAttribute('aria-hidden')).toBe('true')
-    // The fork's muscle map has seven shades (0 to 6, lib/muscles.js levelsOf): the busiest muscle is l6.
-    expect(host.querySelectorAll('.bm-m.l6').length).toBeGreaterThan(0)
+    expect(host.querySelectorAll('.bm-m.l4').length).toBeGreaterThan(0)
   })
   it('adds up several routines of one day', async () => {
     await render(<MiniBodyMap routines={[{ ex: [{ id: 'bench', sets: 3, muscleWeights: { chest: 1, triceps: 0.4 } }] }, { ex: [{ id: 'squat', sets: 3, muscleWeights: { quadriceps: 1, gluteal: 0.5 } }] }]} body="male" />)

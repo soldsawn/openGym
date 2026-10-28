@@ -286,8 +286,7 @@ describe('muscle balance windows and ranking', () => {
   it('uses relative levels and canonical order to break load ties', () => {
     const load = { chest: 2, deltoids: 2, biceps: 1 }
     expect(rankOf(load).worked).toEqual(['deltoids', 'chest', 'biceps'])
-    // The heat map has seven levels (0–6): the most-worked muscle is 6, half of it 3.
-    expect(levelsOf(load)).toMatchObject({ deltoids: 6, chest: 6, biceps: 3, abs: 0 })
+    expect(levelsOf(load)).toMatchObject({ deltoids: 4, chest: 4, biceps: 2, abs: 0 })
   })
 
   it('keeps catalogue precedence and deleted-custom snapshot weights', () => {

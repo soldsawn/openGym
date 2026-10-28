@@ -54,7 +54,7 @@ describe('workoutCardModel', () => {
       { w: 40, r: 8, done: true, phase: 'warmup' }, { w: 60, r: 8, done: true }, { w: 60, r: 8, done: false },
     ] }] }
     const { levels } = workoutCardModel(bench, { unit: 'kg', nameOf })
-    expect(levels.chest).toBe(6)    // the hardest-worked muscle is the top of the seven levels
+    expect(levels.chest).toBe(4)
     expect(levels.triceps).toBeGreaterThan(0)
     expect(levels.quadriceps).toBe(0)
   })
