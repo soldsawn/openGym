@@ -237,6 +237,9 @@ export const DEF = {
   // #770): 'routine' is the routine's own last session of the exercise, as it has been since #216;
   // 'any' is its newest session in any workout. Absent reads as 'routine'.
   lastFrom: 'routine',
+  // The progression rule of a freestyle exercise without one of its own (Settings → Fine-tuning,
+  // lib/session-start.js freestyleRoutine): 'off' repeats last time, as freestyle always did.
+  freestyleProg: 'off',
   // Per-language choice for translated exercise names: whether the original English name is
   // shown in parentheses next to the translation. Map { '<lang>': boolean }; a missing key
   // (any profile written before this setting existed) reads as shown.

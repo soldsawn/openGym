@@ -2718,4 +2718,10 @@ export default {
   'Play music': 'সংগীত চালান',
   'Music controls': 'সংগীত নিয়ন্ত্রণ',
   'Previous, play/pause and next for the music you are playing, under the header.': 'চলমান সংগীতের জন্য আগের, চালান/থামান ও পরের বোতাম, হেডারের নিচে।',
+  // --- Freestyle progression (fork) ---
+  'Freestyle progression': 'ফ্রিস্টাইলে অগ্রগতি',
+  'Repeat last time': 'গতবারের মতো',
+  'Each exercise opens at what you did last time. Nothing goes up on its own.': 'প্রতিটি ব্যায়াম গতবার যা করেছিলেন তা দিয়ে শুরু হয়। কিছুই নিজে থেকে বাড়ে না।',
+  'Follow freestyle ({0})': 'ফ্রিস্টাইলের নিয়ম ({0})',
+  'Freestyle repeats what you did last time. Pick a rule here, or one for every freestyle exercise in Settings.': 'ফ্রিস্টাইল গতবার যা করেছিলেন তা আবার করে। এখানে একটি নিয়ম বেছে নিন, অথবা সেটিংসে সব ফ্রিস্টাইল ব্যায়ামের জন্য একটি।',
 }

@@ -2639,4 +2639,10 @@ export default {
   'Play music': '播放音乐',
   'Music controls': '音乐控制',
   'Previous, play/pause and next for the music you are playing, under the header.': '在标题下方，为正在播放的音乐提供上一首、播放/暂停和下一首。',
+  // --- Freestyle progression (fork) ---
+  'Freestyle progression': '自由训练的递进规则',
+  'Repeat last time': '重复上次',
+  'Each exercise opens at what you did last time. Nothing goes up on its own.': '每个动作都从你上次做的开始，不会自动增加。',
+  'Follow freestyle ({0})': '跟随自由训练设置（{0}）',
+  'Freestyle repeats what you did last time. Pick a rule here, or one for every freestyle exercise in Settings.': '自由训练会重复你上次做的内容。在这里选择规则，或在设置中为所有自由训练动作选一个。',
 }

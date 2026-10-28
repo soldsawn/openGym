@@ -2686,4 +2686,10 @@ export default {
   'Play music': 'Spela musik',
   'Music controls': 'Musikkontroller',
   'Previous, play/pause and next for the music you are playing, under the header.': 'Föregående, spela/pausa och nästa för musiken som spelas, under rubriken.',
+  // --- Freestyle progression (fork) ---
+  'Freestyle progression': 'Progression i fritt pass',
+  'Repeat last time': 'Upprepa förra gången',
+  'Each exercise opens at what you did last time. Nothing goes up on its own.': 'Varje övning öppnar med det du gjorde förra gången. Inget ökar av sig självt.',
+  'Follow freestyle ({0})': 'Som i fritt pass ({0})',
+  'Freestyle repeats what you did last time. Pick a rule here, or one for every freestyle exercise in Settings.': 'Fritt pass upprepar det du gjorde förra gången. Välj en regel här, eller en för alla övningar i fritt pass under Inställningar.',
 }

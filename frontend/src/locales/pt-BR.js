@@ -1721,6 +1721,12 @@ export const PT_BR_OVERRIDES = {
   'Play music': 'Tocar música',
   'Music controls': 'Controles de música',
   'Previous, play/pause and next for the music you are playing, under the header.': 'Anterior, tocar/pausar e próxima para a música que está tocando, abaixo do cabeçalho.',
+  // --- Freestyle progression (fork) ---
+  'Freestyle progression': 'Progressão no treino livre',
+  'Repeat last time': 'Repetir a última vez',
+  'Each exercise opens at what you did last time. Nothing goes up on its own.': 'Cada exercício abre com o que você fez da última vez. Nada sobe sozinho.',
+  'Follow freestyle ({0})': 'Como no livre ({0})',
+  'Freestyle repeats what you did last time. Pick a rule here, or one for every freestyle exercise in Settings.': 'O treino livre repete o que você fez da última vez. Escolha uma regra aqui, ou uma para todos os exercícios livres nas Configurações.',
 }
 
 export default { ...pt, ...PT_BR_OVERRIDES }

@@ -8,7 +8,7 @@ import { useUI } from '../store/useUI.js'
 import { EXIDX, exOr, betterWeight } from '../lib/exercises.js'
 import { usesBar } from '../lib/bar.js'
 import { loadKindFor, baseWeightFor, inventoryFor, rowLoad, sameLoad, plateDelta, dropGrid } from '../lib/plates.js'
-import { effectiveRoutines, effectiveRoutineIds, lastEntryFor, bestWeightFor, bestWeightForEntry, freestyleConfig, pickedExerciseConfig, setsDoneActive, setUnitsTotal, supersetUnits, unitOf, setLabel, modeOf, isBw, isPerSide, repStep, EFFORT, effortOf, stepEffort, capEffort, cascadeWeight, insertWarmupRow, barFloor, makeWarmupAt, canBeWarmup, makeWorkAt, removeRowAt, removeLastSet, setSpanAt, copyRowAt, copySpanAt, insertRowAt, pairAdjacent, unpairSuperset, cleanupSg, applyIntensifierPlan, pinnedNoteFor, exNoteFor, setsRepsOf, sessionVolume } from '../lib/history.js'
+import { effectiveRoutines, effectiveRoutineIds, lastEntryFor, bestWeightFor, bestWeightForEntry, pickedExerciseConfig, setsDoneActive, setUnitsTotal, supersetUnits, unitOf, setLabel, modeOf, isBw, isPerSide, repStep, EFFORT, effortOf, stepEffort, capEffort, cascadeWeight, insertWarmupRow, barFloor, makeWarmupAt, canBeWarmup, makeWorkAt, removeRowAt, removeLastSet, setSpanAt, copyRowAt, copySpanAt, insertRowAt, pairAdjacent, unpairSuperset, cleanupSg, applyIntensifierPlan, pinnedNoteFor, exNoteFor, setsRepsOf, sessionVolume } from '../lib/history.js'
 import { fmtNum, fmtPlate, fmtVol, exerciseNameText, fmtDate, fmtDaysAgo, todayISO, exCount, DAYN } from '../lib/format.js'
 import { speedUnitOf, toSpeed, fromSpeed } from '../lib/speed.js'
 import { clampIncline, hasIncline, inclineFits, inclineFrom, INCLINE_STEP } from '../lib/incline.js'
@@ -35,7 +35,7 @@ import Icon from '../components/Icon.jsx'
 import { Button, Check, NumberField } from '../components/ui.jsx'
 import { defaultIncrement, weightIncrement, stepWeight } from '../lib/progression.js'
 import { progressionGuidance } from '../lib/progression-copy.js'
-import { buildPlannedEntry, buildSessionEntry, plannedConfigOf, builtOutOfProgression } from '../lib/session-start.js'
+import { buildPlannedEntry, buildSessionEntry, plannedConfigOf, builtOutOfProgression, freestyleRoutine, freestyleSeed } from '../lib/session-start.js'
 import { routineChangesFromEntry, updateRoutineFromEntry } from '../lib/routines.js'
 import { sessionNoProg, setSessionNoProg, setEntryNoProg, joinSessionNoProg } from '../lib/session-noprog.js'
 import { glyphOf } from '../lib/glyphs.js'
@@ -1584,9 +1584,10 @@ function ActiveWorkout() {
     const freestyle = !routine
     const noProg = !freestyle && builtOutOfProgression(curEntry, routine)
     // Freestyle has no routine prescription to apply: show the last target in the config
-    // sheet and carry its completed rows forward. A planned session uses its configured
+    // sheet and carry its completed rows forward, or, with a freestyle rule (Settings), last
+    // time's plan for the rule to progress (freestyleSeed). A planned session uses its configured
     // target when progression is off, while progression-enabled sessions keep their path.
-    const seed = freestyle ? freestyleConfig(sessionHistory(S), { id: ex.id, ...pickedExerciseConfig(ex.id) }) : null
+    const seed = freestyle ? freestyleSeed(sessionHistory(S), { id: ex.id, ...pickedExerciseConfig(ex.id) }) : null
     const commit = cfg => {
       if (focusMode) focusPointerEpoch.current++
       update(s => {
@@ -1607,7 +1608,7 @@ function ActiveWorkout() {
     // who wants to set sets/reps first.
     if (quick) { commit(seed || pickedExerciseConfig(ex.id)); useUI.getState().toast(t('“{0}” added to {1}', exerciseNameText(ex), routine ? routine.name : t('Freestyle'))) }
     // The confirm names what it changes: this workout, never the routine behind it.
-    else exConfigSheet(ex, null, commit, null, routine, seed, null, t('Add to this workout'))
+    else exConfigSheet(ex, null, commit, null, routine, seed, null, t('Add to this workout'), { freestyle })
   })
   // Ending the session without saving it, from the Finish sheet only. It used to end the header ⋯
   // as a red trash too, right where the exercise ⋯ keeps Remove exercise, and after a hard session
@@ -1713,7 +1714,8 @@ function ActiveWorkout() {
         // kept in place (done warm-ups first, then done work sets, then the fresh remainder).
         // Without a prescription only in a routine kept out of progression: an exercise kept out
         // by hand keeps its prescription, so its Undo leaves the numbers it should count at.
-        const built = buildPlannedEntry(sessionHistory(s), full, activeRoutine, { noProg: builtOutOfProgression(activeEntry, activeRoutine) })
+        // A freestyle entry (no `rid`) follows the freestyle rule, not the planned default.
+        const built = buildPlannedEntry(sessionHistory(s), full, activeEntry.rid ? activeRoutine : freestyleRoutine(s), { noProg: builtOutOfProgression(activeEntry, activeRoutine) })
         const fresh = built.sets
         // A per-side set with one side ticked is logged work too, not a row to rebuild.
         const logged = x => x.done || x.sides?.L?.done || x.sides?.R?.done
@@ -1728,7 +1730,7 @@ function ActiveWorkout() {
         else delete activeEntry.carried
         activeEntry.sets = [...doneWarm, ...freshWarm.slice(doneWarm.length), ...doneWork, ...freshWork.slice(doneWork.length)]
       })
-    }, null, routine)
+    }, null, routine, null, null, undefined, { freestyle: !entry.rid })
   }
 
   // Remove a whole exercise from the session. The confirmation always asks first; in a

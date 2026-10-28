@@ -2639,4 +2639,10 @@ export default {
   'Play music': 'Müziği çal',
   'Music controls': 'Müzik kontrolleri',
   'Previous, play/pause and next for the music you are playing, under the header.': 'Çalan müzik için önceki, oynat/duraklat ve sonraki, başlığın altında.',
+  // --- Freestyle progression (fork) ---
+  'Freestyle progression': 'Serbest antrenman ilerlemesi',
+  'Repeat last time': 'Geçen seferi tekrarla',
+  'Each exercise opens at what you did last time. Nothing goes up on its own.': 'Her egzersiz geçen sefer yaptığınla açılır. Hiçbir şey kendiliğinden artmaz.',
+  'Follow freestyle ({0})': 'Serbest ayarını izle ({0})',
+  'Freestyle repeats what you did last time. Pick a rule here, or one for every freestyle exercise in Settings.': 'Serbest antrenman geçen sefer yaptığını tekrarlar. Burada bir kural seç ya da tüm serbest egzersizler için Ayarlar’dan seç.',
 }

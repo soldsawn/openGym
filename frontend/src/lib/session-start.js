@@ -3,9 +3,9 @@
 // to identical entries, or the two paths drift apart the first time a prescription rule changes.
 // Imports both history.js and progression.js (which itself imports history.js); nothing in
 // either imports this file, so there is no cycle.
-import { buildSets, applyIntensifierPlan, modeOf, barFloor } from './history.js'
+import { buildSets, applyIntensifierPlan, modeOf, barFloor, freestyleConfig, lastEntryFor } from './history.js'
 import { isWarmupRow } from './workout-model.js'
-import { nextPrescription, applyPrescription, defaultIncrement, weightIncrement, plannedOf } from './progression.js'
+import { nextPrescription, applyPrescription, defaultIncrement, weightIncrement, plannedOf, policyFor } from './progression.js'
 import { dropGrid } from './plates.js'
 import { backoffStepOf, applyBackoff } from './backoff.js'
 import { dbLoadFor, historyAs, ownedWeightsFor, withMeaning } from './dumbbells.js'
@@ -120,15 +120,42 @@ export function plannedConfigOf(entry) {
 export const builtOutOfProgression = (entry, routine) => entry?.noProg === true && routine?.excludeFromProgression === true
 
 /**
+ * Freestyle has no routine to take a progression rule from, so one setting stands in for it
+ * (S.freestyleProg, Settings → Fine-tuning). 'off' or absent, a freestyle exercise repeats what
+ * you did last time, the way it always did. An exercise's own rule (its `prog`) wins either way.
+ * The stand-in has no `id`, so the prescription reads the exercise's whole history.
+ */
+export const freestyleRoutine = st => ({ prog: st?.freestyleProg || 'off' })
+export const freestyleProgresses = (st, cfg) => policyFor(cfg, freestyleRoutine(st), modeOf(cfg)) !== 'off'
+
+/**
+ * What a freestyle add opens with: last time's target (history.js freestyleConfig). When a rule
+ * applies, the sets and reps are last time's plan rather than the target its prescription moved,
+ * so the next build reads the same plan and keeps progressing (nextPrescription planChanged).
+ * The weight stays last time's: the prescription decides it, and the plan does not compare it.
+ */
+export function freestyleSeed(st, cfg) {
+  const seed = freestyleConfig(st, cfg)
+  if (!freestyleProgresses(st, seed)) return seed
+  const planned = lastEntryFor(st, cfg.id)?.planned
+  if (!planned) return seed
+  const { weight: _weight, ...plan } = planned
+  return { ...seed, ...plan }
+}
+
+/**
  * An exercise added to or swapped into a running session, beside `slot`. A planned slot builds
- * it the way its routine would; freestyle reproduces what you did last time, so swapping barbell
- * for dumbbell bench does not start you at an empty bar. Read from before the session's day when
- * it is logged into the past (sessionHistory).
+ * it the way its routine would; freestyle reproduces what you did last time (or prescribes by its
+ * rule, freestyleRoutine), so swapping barbell for dumbbell bench does not start you at an empty
+ * bar. Read from before the session's day when it is logged into the past (sessionHistory).
  */
 export function buildSessionEntry(st, id, cfg, routine, slot) {
   const full = { ...cfg, id }
   const past = sessionHistory(st)
   if (routine) return buildPlannedEntry(past, full, routine, { noProg: builtOutOfProgression(slot, routine) })
+  // Freestyle with a rule (the setting's or the exercise's own) is prescribed like a planned
+  // exercise, from the exercise's whole history.
+  if (freestyleProgresses(st, full)) return buildPlannedEntry(past, full, freestyleRoutine(st))
   // Freestyle stamps the meaning of a dumbbell weight and reads last time in it, the way
   // buildPlannedEntry does for a planned exercise (lib/dumbbells.js).
   const step = modeOf(full) === 'reps' ? (ownedWeightsFor(st, full) || weightIncrement(full, st.unit)) : defaultIncrement(id, st.unit)

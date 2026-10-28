@@ -2639,4 +2639,10 @@ export default {
   'Play music': 'संगीत चलाएँ',
   'Music controls': 'संगीत नियंत्रण',
   'Previous, play/pause and next for the music you are playing, under the header.': 'चल रहे संगीत के लिए पिछला, चलाएँ/रोकें और अगला, हेडर के नीचे।',
+  // --- Freestyle progression (fork) ---
+  'Freestyle progression': 'फ्रीस्टाइल में प्रगति',
+  'Repeat last time': 'पिछली बार जैसा',
+  'Each exercise opens at what you did last time. Nothing goes up on its own.': 'हर एक्सरसाइज़ वहीं से शुरू होती है जो आपने पिछली बार किया। अपने आप कुछ नहीं बढ़ता।',
+  'Follow freestyle ({0})': 'फ्रीस्टाइल का नियम ({0})',
+  'Freestyle repeats what you did last time. Pick a rule here, or one for every freestyle exercise in Settings.': 'फ्रीस्टाइल वही दोहराता है जो आपने पिछली बार किया। यहाँ नियम चुनें, या सेटिंग्स में सभी फ्रीस्टाइल एक्सरसाइज़ के लिए एक।',
 }

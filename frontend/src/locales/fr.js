@@ -2639,4 +2639,10 @@ export default {
   'Play music': 'Lancer la musique',
   'Music controls': 'Commandes de musique',
   'Previous, play/pause and next for the music you are playing, under the header.': 'Précédent, lecture/pause et suivant pour la musique en cours, sous l’en-tête.',
+  // --- Freestyle progression (fork) ---
+  'Freestyle progression': 'Progression en séance libre',
+  'Repeat last time': 'Répéter la dernière fois',
+  'Each exercise opens at what you did last time. Nothing goes up on its own.': 'Chaque exercice reprend ce que vous avez fait la dernière fois. Rien n’augmente tout seul.',
+  'Follow freestyle ({0})': 'Comme en libre ({0})',
+  'Freestyle repeats what you did last time. Pick a rule here, or one for every freestyle exercise in Settings.': 'La séance libre reprend ce que vous avez fait la dernière fois. Choisissez une règle ici, ou une pour tous les exercices libres dans les Réglages.',
 }

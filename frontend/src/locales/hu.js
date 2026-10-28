@@ -2642,4 +2642,10 @@ export default {
   'Play music': 'Zene lejátszása',
   'Music controls': 'Zenevezérlők',
   'Previous, play/pause and next for the music you are playing, under the header.': 'Előző, lejátszás/szünet és következő a szóló zenéhez, a fejléc alatt.',
+  // --- Freestyle progression (fork) ---
+  'Freestyle progression': 'Progresszió szabad edzésben',
+  'Repeat last time': 'Legutóbbi ismétlése',
+  'Each exercise opens at what you did last time. Nothing goes up on its own.': 'Minden gyakorlat azzal indul, amit legutóbb csináltál. Semmi sem nő magától.',
+  'Follow freestyle ({0})': 'A szabad edzés szabálya ({0})',
+  'Freestyle repeats what you did last time. Pick a rule here, or one for every freestyle exercise in Settings.': 'A szabad edzés megismétli, amit legutóbb csináltál. Válassz itt szabályt, vagy egyet minden szabad gyakorlathoz a Beállításokban.',
 }

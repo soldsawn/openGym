@@ -2694,4 +2694,10 @@ export default {
   'Play music': 'تشغيل الموسيقى',
   'Music controls': 'أزرار الموسيقى',
   'Previous, play/pause and next for the music you are playing, under the header.': 'السابق والتشغيل/الإيقاف المؤقت والتالي للموسيقى التي تعمل، أسفل الترويسة.',
+  // --- Freestyle progression (fork) ---
+  'Freestyle progression': 'التدرج في التمرين الحر',
+  'Repeat last time': 'كرر المرة السابقة',
+  'Each exercise opens at what you did last time. Nothing goes up on its own.': 'يبدأ كل تمرين بما فعلته في المرة السابقة. لا يزيد شيء من تلقاء نفسه.',
+  'Follow freestyle ({0})': 'كما في التمرين الحر ({0})',
+  'Freestyle repeats what you did last time. Pick a rule here, or one for every freestyle exercise in Settings.': 'التمرين الحر يكرر ما فعلته في المرة السابقة. اختر قاعدة هنا، أو قاعدة لكل تمارين التمرين الحر من الإعدادات.',
 }

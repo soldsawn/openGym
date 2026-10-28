@@ -2639,4 +2639,10 @@ export default {
   'Play music': '음악 재생',
   'Music controls': '음악 컨트롤',
   'Previous, play/pause and next for the music you are playing, under the header.': '재생 중인 음악의 이전 곡, 재생/일시정지, 다음 곡 버튼을 헤더 아래에 표시해요.',
+  // --- Freestyle progression (fork) ---
+  'Freestyle progression': '자유 운동 점진적 과부하',
+  'Repeat last time': '지난번 그대로',
+  'Each exercise opens at what you did last time. Nothing goes up on its own.': '각 운동은 지난번에 한 그대로 시작해요. 저절로 올라가는 건 없어요.',
+  'Follow freestyle ({0})': '자유 운동 설정을 따름 ({0})',
+  'Freestyle repeats what you did last time. Pick a rule here, or one for every freestyle exercise in Settings.': '자유 운동은 지난번에 한 것을 그대로 반복해요. 여기서 규칙을 고르거나, 설정에서 모든 자유 운동에 적용할 규칙을 고르세요.',
 }

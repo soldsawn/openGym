@@ -2643,4 +2643,10 @@ export default {
   'Play music': 'Включить музыку',
   'Music controls': 'Управление музыкой',
   'Previous, play/pause and next for the music you are playing, under the header.': 'Назад, пуск/пауза и вперёд для играющей музыки, под заголовком.',
+  // --- Freestyle progression (fork) ---
+  'Freestyle progression': 'Прогрессия в свободной тренировке',
+  'Repeat last time': 'Повторять прошлый раз',
+  'Each exercise opens at what you did last time. Nothing goes up on its own.': 'Каждое упражнение начинается с того, что вы сделали в прошлый раз. Ничего не растёт само.',
+  'Follow freestyle ({0})': 'Как в свободной ({0})',
+  'Freestyle repeats what you did last time. Pick a rule here, or one for every freestyle exercise in Settings.': 'Свободная тренировка повторяет то, что вы сделали в прошлый раз. Выберите правило здесь или одно для всех свободных упражнений в Настройках.',
 }

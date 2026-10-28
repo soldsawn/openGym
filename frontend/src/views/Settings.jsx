@@ -40,6 +40,7 @@ import { selfUpdates } from '../lib/channel.js'
 import { forgetCoach } from '../lib/coach-api.js'
 import { coachAvailable } from '../lib/coach.js'
 import { REST_MAX, REST_PAUSE_MIN, REST_PAUSE_MAX, fmtRest, fmtDuration } from '../lib/duration.js'
+import { POLICIES_FOR, POLICY_NAME, POLICY_DESC } from '../lib/progression.js'
 import { starterPlanSheet, confirmSheet, importFromApp, importFromHevy, equipmentProfileSheet, plateInventorySheet, dumbbellInventorySheet, barDefaultsSheet, menuSheet } from '../sheets.jsx'
 import Icon from '../components/Icon.jsx'
 import { durationSheet } from '../components/DurationWheel.jsx'
@@ -620,6 +621,14 @@ export default function Settings({ page = null, find = null, via = null, entryKe
               { value: 'routine', label: t('This routine'), subtitle: t('Your last session of the exercise in the same routine. Heavy day and light day stay apart.') },
               { value: 'any', label: t('Any workout'), subtitle: t('The last time you did the exercise, whichever routine it was in.') },
             ]} />
+          {/* Freestyle has no routine to take a rule from (lib/session-start.js freestyleRoutine):
+              this one stands in for it. 'off', the default, repeats last time; an exercise's own
+              rule still wins. */}
+          <SelectRow icon="chart" iconTint="var(--orange)" title={t('Freestyle progression')}
+            value={POLICIES_FOR.reps.includes(S.freestyleProg) ? S.freestyleProg : 'off'} onChange={v => update(s => { s.freestyleProg = v })}
+            options={POLICIES_FOR.reps.map(p => p === 'off'
+              ? { value: 'off', label: t('Repeat last time'), subtitle: t('Each exercise opens at what you did last time. Nothing goes up on its own.') }
+              : { value: p, label: t(POLICY_NAME[p]), subtitle: t(POLICY_DESC[p]) })} />
           <Row icon="stopwatch" iconTint="var(--orange)" title={t('Keep timing after target')}
             subtitle={t('Timed sets continue up to 15 extra minutes. Tap Done to log the actual duration.')}>
             <Switch aria-label={t('Keep timing after target')} checked={!!S.timedSetOvertime}

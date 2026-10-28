@@ -2650,4 +2650,10 @@ export default {
   'Play music': 'เล่นเพลง',
   'Music controls': 'ปุ่มควบคุมเพลง',
   'Previous, play/pause and next for the music you are playing, under the header.': 'ปุ่มก่อนหน้า เล่น/หยุดชั่วคราว และถัดไป สำหรับเพลงที่กำลังเล่น ใต้ส่วนหัว',
+  // --- Freestyle progression (fork) ---
+  'Freestyle progression': 'การเพิ่มน้ำหนักในโหมดฟรีสไตล์',
+  'Repeat last time': 'ทำซ้ำครั้งก่อน',
+  'Each exercise opens at what you did last time. Nothing goes up on its own.': 'แต่ละท่าเริ่มจากสิ่งที่คุณทำครั้งก่อน ไม่มีอะไรเพิ่มขึ้นเอง',
+  'Follow freestyle ({0})': 'ตามกฎของฟรีสไตล์ ({0})',
+  'Freestyle repeats what you did last time. Pick a rule here, or one for every freestyle exercise in Settings.': 'ฟรีสไตล์จะทำซ้ำสิ่งที่คุณทำครั้งก่อน เลือกกฎที่นี่ หรือเลือกกฎเดียวสำหรับทุกท่าฟรีสไตล์ในการตั้งค่า',
 }

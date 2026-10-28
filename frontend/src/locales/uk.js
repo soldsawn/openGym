@@ -2636,4 +2636,10 @@ export default {
   'Play music': 'Увімкнути музику',
   'Music controls': 'Керування музикою',
   'Previous, play/pause and next for the music you are playing, under the header.': 'Назад, відтворення/пауза і вперед для музики, що грає, під заголовком.',
+  // --- Freestyle progression (fork) ---
+  'Freestyle progression': 'Прогресія в довільному тренуванні',
+  'Repeat last time': 'Повторювати минулий раз',
+  'Each exercise opens at what you did last time. Nothing goes up on its own.': 'Кожна вправа починається з того, що ви зробили минулого разу. Нічого не росте само.',
+  'Follow freestyle ({0})': 'Як у довільному ({0})',
+  'Freestyle repeats what you did last time. Pick a rule here, or one for every freestyle exercise in Settings.': 'Довільне тренування повторює те, що ви зробили минулого разу. Оберіть правило тут або одне для всіх довільних вправ у Налаштуваннях.',
 }
